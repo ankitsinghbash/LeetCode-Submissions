@@ -16,7 +16,7 @@ public:
 
     int tribonacci(int n) {
         //first solve by recursion:
-        int dp[n+3];
+        int dp[n+3]; 
         int ans=solve(n,dp);
         return ans;
     }
