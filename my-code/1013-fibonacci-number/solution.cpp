@@ -27,7 +27,7 @@ public:
     
    
     int fib(int n) {
-        int dp[n+2];
+        int dp[n+2];   //this is helpful when user input the value n=0: so always allign in range:
          dp[0]=0;
         dp[1]=1;
         for(int i=2;i<=n;i++)
