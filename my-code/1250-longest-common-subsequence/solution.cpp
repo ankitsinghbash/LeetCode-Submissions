@@ -17,7 +17,7 @@ public:
         {
             for(int j=1;j<m+1;j++)
             {
-                if(text1[i-1]==text2[j-1])  //this[i-1]&&[j-1] balance the stinrg size:
+                if(text1[i-1]==text2[j-1])  //this[i-1]&&[j-1] balance the string size:
                 {
                     dp[i][j]=dp[i-1][j-1]+1;
                 }
@@ -30,5 +30,27 @@ public:
         return dp[n][m];
     }
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
