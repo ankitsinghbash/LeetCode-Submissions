@@ -6,10 +6,10 @@ public:
         vector<bool> dp(n+1,false);
         //let's we reache's the last index:
         dp[n-1]=true;  
-        for(int i=n-1;i>=0;i--)
+        for(int i=n-2;i>=0;i--)
         {
             //we jum from 1 to nums[i]: and i+j<n;
-           for(int j=1;j<=nums[i]&&i+j<n;j++)
+           for(int j=0;j<=nums[i]&&i+j<n;j++)
            {
                if(dp[i+j]==true)
                {
