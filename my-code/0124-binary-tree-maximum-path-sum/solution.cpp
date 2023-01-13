@@ -11,21 +11,27 @@
  */
 class Solution {
 public:
-    int maxx;
-    int pathoftree(TreeNode *root,int &maxval){
-     if(root==NULL) return 0;
+    int ans;
+    int dfs(TreeNode *root){
+       if(root==NULL){
+           return 0;
+       }
+    
+      int l = dfs(root->left);
+      int r = dfs(root->right);
+      
+      int koi_ek_acha = max(l,r)+root->val;
+      int only_root_acha = root->val;
+      int nicha_hi_mil_gya = l+r+root->val;
+    
+      ans = max({ans,koi_ek_acha,only_root_acha,nicha_hi_mil_gya});
 
-     int leftval = max(0,pathoftree(root->left,maxval));
-     int rightval =max(0,pathoftree(root->right,maxval)); //right me store 35:
-
-     maxval= max(maxval,leftval+rightval+root->val);
-
-     return max(leftval,rightval)+root->val;
+       return max(koi_ek_acha,only_root_acha);
     }
 
     int maxPathSum(TreeNode* root) {
-    maxx=INT_MIN;
-    pathoftree(root,maxx);
-    return maxx;
+        ans=INT_MIN;
+        dfs(root);
+        return ans;
     }
 };
