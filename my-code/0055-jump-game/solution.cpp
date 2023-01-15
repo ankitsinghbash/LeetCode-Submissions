@@ -1,24 +1,33 @@
 class Solution {
-public:    
-    bool canJump(vector<int>& nums) {
-        //down top dp;
-        int n=nums.size();
-        vector<bool> dp(n+1,false);
-        //let's we reache's the last index:
-        dp[n-1]=true;  
-        for(int i=n-2;i>=0;i--)
-        {
-            //we jum from 1 to nums[i]: and i+j<n;
-           for(int j=0;j<=nums[i]&&i+j<n;j++)
-           {
-               if(dp[i+j]==true)
-               {
-                   dp[i]=true;
-                   break;
-               }
-           }
-        }
+public:
+   
+   
+   bool solve(vector<int>& nums,int idx,int n,vector<int> &dp){
+      if(idx>=n){
+          return false;
+      }
+      if(idx==n-1){
+          return true;
+      }
 
-       return dp[0];
+      if(dp[idx]!=-1){
+          return dp[idx];
+      }
+     
+      for(int i=1;i<=nums[idx];i++){
+          if(solve(nums,idx+i,n,dp)){
+              return dp[idx]=true;
+          }
+      }
+      
+      return dp[idx]=false;
+   }
+
+ 
+    bool canJump(vector<int>& nums) {
+        int n=nums.size();
+        vector<int> dp(n+1,-1);
+        bool ans = solve(nums,0,n,dp);
+        return ans;
     }
 };
