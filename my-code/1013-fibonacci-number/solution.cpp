@@ -1,31 +1,34 @@
-/*
+
 class Solution {
 public:
     
-    int helper(int n)
+    int helper(int n,vector<int> &dp)
     {
         if(n==0||n==1)
         {
             return n;
         }
+
+        if(dp[n]!=-1)
+           return dp[n];
         
-      int ans=helper(n-1)+helper(n-2);
-      return ans;
+      int ans=helper(n-1,dp)+helper(n-2,dp);
+      return dp[n]=ans;
     }
 
     int fib(int n) {
-         int solution = helper(n); 
+        vector<int> dp(n+1,-1);
+         int solution = helper(n,dp); 
          return solution;
     }
 };
 
-*/
 
+
+/*
 
 class Solution {
 public:
-    
-   
     int fib(int n) {
         int dp[n+2];   //this is helpful when user input the value n=0: so always allign in range:
          dp[0]=0;
@@ -37,3 +40,4 @@ public:
         return dp[n];
     }
 };
+*/
