@@ -1,33 +1,37 @@
 class Solution {
 public:
+   int solve(vector<int> &nums,int idx,int n,vector<int> &dp){
+    if(idx>=n){
+        return 0;
+    }
 
-   int solve1(vector<int> nums)
-   {
-       int n = nums.size();
-       if(n==0) return 0;
-       if(n==1) return nums[0];
+    if(dp[idx]!=-1){
+        return dp[idx];
+    }
 
-
-      
-       vector<int> dp(n+1,0);
-       dp[1]=nums[0];
-       for(int i=2;i<n+1;i++)
-       {
-           dp[i]=max(dp[i-1],dp[i-2]+nums[i-1]);
-       }
-      return dp[n];
+     int pick = nums[idx]+solve(nums,idx+2,n,dp);
+     int notpick = solve(nums,idx+1,n,dp);
+     return dp[idx]=max(pick,notpick);
+     
    }
 
     int rob(vector<int>& nums) {
-       int n=nums.size();
-       if(n==0) return 0;
-       if(n==1) return nums[0];
+    
+        int n = nums.size();
+        if(n==0){
+            return 0;
+        }
+         if(n==1){
+             return nums[0];
+         }
+    
 
-
-        //answer max(0 to n-2 to 1 to n-1);
-        vector<int> nums1(nums.begin(),nums.end()-1);
-        vector<int> nums2(nums.begin()+1,nums.end());
-        int ans = max(solve1(nums1),solve1(nums2));
-        return ans;
+        
+        
+       vector<int> dp1(n+1,-1) , dp2(n+1,-1);
+        int first = solve(nums,0,n-1,dp1); 
+   
+        int second = solve(nums,1,n,dp2);
+        return max(first,second); 
     }
 };
