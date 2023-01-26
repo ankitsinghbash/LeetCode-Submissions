@@ -1,33 +1,31 @@
 class Solution {
 public:
-    int dp[46];
-    int climbStairs(int n) {
 
-     //recursive wali condition in dp;   
-    dp[1]=1;
-    dp[2]=2;
+    int solve(int n,int idx,int dp[]){
+  
+       if(idx==n){
+           return 1;
+       }
 
-    for(int i=3;i<n+1;i++)
-    {
-        dp[i]=dp[i-1]+dp[i-2];
+       if(idx>n){
+           return 0;
+       }
+
+       if(dp[idx]!=-1){
+           return dp[idx];
+       }
+      
+        int step1  = solve(n,idx+1,dp);
+        int step2  = solve(n,idx+2,dp);
+
+        return dp[idx]=step1+step2;
+
+
     }
-    return dp[n];
+
+    int climbStairs(int n) {
+       int dp[46];
+       memset(dp,-1,sizeof(dp));
+       return solve(n,0,dp);
     }
 };
-
-
- /*
-      //I have only two option at each strairs:
-      //Either i take 1's step or take 2's step:
-      if(n==0||n==1)
-      {
-          return 1;
-      }
-
-      int first=climbStairs(n-1);
-      int second=climbStairs(n-2);
-      int ans=first+second;
-      return ans;
-
-    }
-    */
