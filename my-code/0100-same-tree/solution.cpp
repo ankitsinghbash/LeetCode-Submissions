@@ -11,7 +11,8 @@
  */
 class Solution {
 public:
-    bool isSameTree(TreeNode* p, TreeNode* q) {
+   
+   bool solve(TreeNode* p, TreeNode* q) {
         if(p==NULL||q==NULL){
             return p==q;
         }
@@ -20,10 +21,14 @@ public:
             return false;
         }
 
-        bool check1 = isSameTree(p->left,q->left);
-        bool check2 = isSameTree(p->right,q->right);
+        bool check1 = solve(p->left,q->left);
+        bool check2 = solve(p->right,q->right);
 
         return check1 && check2;
 
+    }
+
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        return solve(p,q);
     }
 };
