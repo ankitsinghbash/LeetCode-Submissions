@@ -1,20 +1,27 @@
 class Solution {
 public:
+
+   static bool cmp(vector<int> &a,vector<int> &b){
+       return a[0]<b[0];
+   }
+
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(begin(intervals),end(intervals));
-        vector<vector<int>> v;
+        sort(intervals.begin(),intervals.end(),cmp);
+    
+        //best way to merge two intervals:
+        vector<vector<int>> ans;
         vector<int> temp = intervals[0];
-        for(auto it : intervals){
+        for(auto &it : intervals){
             if(temp[1]>=it[0]){
-                temp[1]=max(it[1],temp[1]);
+                temp[1]=max(temp[1],it[1]);
             }
-            else{
-                v.push_back(temp);
+            else
+            {
+                ans.push_back(temp);
                 temp=it;
             }
         }
-        //push last wala:
-        v.push_back(temp);
-        return v;
+        ans.push_back(temp);
+        return ans;
     }
 };
