@@ -20,12 +20,14 @@ public:
               return;
         }
          
-        if(!root->left && !root->right )
+        if(root->left==NULL && root->right==NULL)
         {
             str+=to_string(root->val);
             ans.push_back(str);
+            str.pop_back();
             return;
         }
+        
         str+=to_string(root->val)+"->";
         helper(root->left,ans,str);
         helper(root->right,ans,str);
