@@ -14,11 +14,11 @@ public:
        int x6 = min(ax2,bx2);
        int y6 = min(ay2,by2);
 
-       if(x5>x6 || y5>y6){  //condition true mean no intersection ->no overlap:
-           overlap=0;
+       if(x5<x6 && y5<y6){  //condition true mean no intersection ->no overlap:
+            overlap =  abs(x6-x5)*abs(y6-y5);    //find the distance between them:  
        }
        else{
-       overlap =  abs(x6-x5)*abs(y6-y5);    //find the distance between them:
+         overlap=0;
        }
        int real_area = area1+area2-overlap;
        return real_area;
