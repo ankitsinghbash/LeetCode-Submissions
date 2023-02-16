@@ -11,17 +11,49 @@
  */
 class Solution {
 public:
-   
-   int solve(TreeNode *root){
+//method 1 by bfs traversal level order:
+    int maxDepth(TreeNode* root) {
        if(root==NULL){
-          return 0;
+           return 0;
        }
 
-      return max(solve(root->left),solve(root->right))+1;
-
-   }
-     
-    int maxDepth(TreeNode* root) {
-        return solve(root);
+        //by bfs:
+        queue<TreeNode*> qu;
+        qu.push(root);
+        int level=0;
+        while(!qu.empty()){
+            int size = qu.size();
+            while(size--){
+                TreeNode *node = qu.front();
+                qu.pop();
+                if(node->left!=NULL){
+                    qu.push(node->left);
+                }
+                if(node->right!=NULL){
+                    qu.push(node->right);
+                }
+            }
+            level++;
+        }
+        return level;
     }
 };
+
+// class Solution {
+// public:
+   
+//    int solve(TreeNode *root){
+//         if(root==NULL) return 0;
+
+//         int left = solve(root->left);
+//         int right = solve(root->right);
+ 
+//         return max(left,right)+1;
+
+//    }
+  
+
+//     int maxDepth(TreeNode* root) {
+//        return solve(root); 
+//     }
+// };
