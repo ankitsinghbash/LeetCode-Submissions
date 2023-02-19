@@ -11,22 +11,15 @@
  */
 class Solution {
 public:
+   
+    int solve(TreeNode *root){
+        if(root==NULL) return 0;
 
-    void solve(TreeNode *root,vector<int> &ans){
-
-     if(root==NULL){
-         return;
-     }
-  
-     ans.push_back(root->val);
-     solve(root->left,ans);
-     solve(root->right,ans);
+        return 1+solve(root->left)+solve(root->right);
 
     }
- 
+
     int countNodes(TreeNode* root) {
-       vector<int> ans;
-       solve(root,ans);
-       return ans.size(); 
+        return solve(root);
     }
 };
