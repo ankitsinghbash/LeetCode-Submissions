@@ -1,35 +1,28 @@
 class Solution {
 public:
-    int change(int amount, vector<int>& coins) {
-        int n = coins.size();
-        int dp[n+1][amount+1];
-        //fix karo 1st col:
-        for(int i=0;i<n+1;i++)
-        {
-            dp[i][0]=1;
-        }
 
-        //fix 1st row:
-        for(int j=1;j<amount+1;j++)
-        {
-            dp[0][j]=0;
-        }
-
-       for(int i=1;i<n+1;i++)
-       {
-           for(int j=1;j<amount+1;j++)
-           {
-               if(j>=coins[i-1])  //amount greater then or equal coin size:
-               {
-                    dp[i][j]=dp[i][j-coins[i-1]]+dp[i-1][j];  //prev case + above case:
-               }
-               else
-               {
-                   //amount is lesser then coin size: //when amount hi kaam ho then copy above case of table:
-                   dp[i][j]=dp[i-1][j];
-               }
-           }
+   int solve(int amount,vector<int> &coins,int idx,vector<vector<int>> &dp)
+   {
+       if(idx<0 || amount<0){
+           return 0;
        }
-       return dp[n][amount];
+
+       if(amount==0){
+           return 1;
+       }
+       if(dp[amount][idx]!=-1){
+           return dp[amount][idx];
+       }
+
+       int pick = solve(amount-coins[idx],coins,idx,dp);
+       int notpick = solve(amount,coins,idx-1,dp);
+
+       return dp[amount][idx]=pick+notpick;
+   }
+ 
+    int change(int amount, vector<int>& coins) {
+        int n=coins.size();
+        vector<vector<int>> dp(amount+1,vector<int>(n+1,-1));
+        return solve(amount,coins,n-1,dp);
     }
 };
