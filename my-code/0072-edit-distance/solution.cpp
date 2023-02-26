@@ -1,28 +1,35 @@
 class Solution {
 public:
+    int solve(string word1,string word2,int idx1,int idx2,vector<vector<int>> &dp){
+        if(idx1>=word1.size()){
+            //get->rest to word2
+            return word2.size()-idx2;
+        }
+        if(idx2>=word2.size()){
+            return word1.size()-idx1;
+        }
+
+        if(dp[idx1][idx2]!=-1){
+            return dp[idx1][idx2];
+        }
+
+        if(word1[idx1]==word2[idx2]){
+            return dp[idx1][idx2]=solve(word1,word2,idx1+1,idx2+1,dp);
+        }
+
+        int op1=0,op2=0,op3=0;
+        op1 = solve(word1,word2,idx1+1,idx2+1,dp);
+        op2 = solve(word1,word2,idx1+1,idx2,dp);
+         op3 = solve(word1,word2,idx1,idx2+1,dp);
+ 
+       return dp[idx1][idx2]=min({op1,op2,op3})+1;
+
+    }
+
+
     int minDistance(string word1, string word2) {
-        int n = word1.size();
-        int m =word2.size();
-        vector<vector<int>> dp(n+1,vector<int>(m+1));
-        dp[0][0]=0;
-
-        for(int i=0;i<n+1;i++){
-            dp[i][0]=i;
-        }
-        for(int j=0;j<m+1;j++){
-            dp[0][j]=j;
-        }
-
-        for(int i=1;i<n+1;i++){
-            for(int j=1;j<m+1;j++){
-                if(word1[i-1]==word2[j-1]){
-                    dp[i][j]=dp[i-1][j-1];
-                }
-                else{
-                    dp[i][j]=min({dp[i-1][j-1],dp[i-1][j],dp[i][j-1]})+1;
-                }
-            }
-        }
-        return dp[n][m];
+        //two approach:
+        vector<vector<int>> dp(501,vector<int>(501,-1));
+        return solve(word1,word2,0,0,dp);
     }
 };
