@@ -1,27 +1,41 @@
 class Solution {
 public:
-    int integerBreak(int n) {
-        //int n=nums.size();
-      if(n==1) return n;
+  
+    int solve(int n,int val,int sum){
 
-       vector<int> dp(n+1);
-       dp[1]=1;
-       for(int i=2;i<n+1;i++)
-       {
-          int maxi=INT_MIN;
-          for(int j=1;j<i;j++)
-          {
-              int maxx = max(j,dp[j])*max(i-j,dp[i-j]);
-              maxi=max(maxi,maxx);
-          }   
-          dp[i]=maxi;
+    if(n==sum){
+        return 1;
+    }
+    if(sum>n || val==n){
+        return 0;
+    }
+ 
+     
+     int  pick = val*solve(n,val,sum+val);
+    int  notpick = 1*solve(n,val+1,sum);
 
-       }
-       return dp[n];
+     return max(pick,notpick);
 
 
     }
+   
+
+    int integerBreak(int n) {
+        return solve(n,1,0);
+    }
 };
 
+//class Solution {
+// public:
+//     vector<int> dp;
+//     int solve(int n, int i, int sum){
+//         if(sum == n) return 1;
+//         if(i == n || sum > n) return 0;
 
-   
+//         if(dp[sum] != -1) return dp[sum];
+
+//         return dp[sum] = max(i*solve(n, i, sum+i), solve(n, i+1, sum));}
+
+//     int integerBreak(int n) {
+//         dp = vector<int> (n+1, -1);
+//         return solve(n, 1, 0);}};
