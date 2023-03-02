@@ -1,30 +1,30 @@
 class Solution {
 public:
     int compress(vector<char>& chars) {
-        //analysis the time-complexity: O(n) because iteration only one time from left->to->right:
-        int n=chars.size();
         int i=0;
-        int index=0;   //jisme value daalyga:
+        int n=chars.size();
+        vector<char> ans;
         while(i<n){
-              char curr =  chars[i];
-              int counter=0;
-              while(i<n && chars[i] == curr){
-                  counter++;
-                  i++;
-              }
-               
-             chars[index]=curr;
-             index++;
-             //chars me value put karo:
-             if(counter>1){
-                 string str=to_string(counter);
-                 for(auto &ch : str){
-                     chars[index]=ch;
-                     index++;
-                 }
-             }
+            char ch = chars[i];
+            int cnt=0;
+            while(i<n && ch==chars[i]){
+                i++;
+                cnt++;
+            }
+        
+         ans.push_back(ch);
+         if(cnt>1){
+           string str = to_string(cnt);
+           for(auto &x : str){
+               ans.push_back(x);
+           }
+         }      
 
         }
-        return index;
+        chars.clear();
+        for(auto &x : ans){
+            chars.push_back(x);
+        }
+        return ans.size();
     }
 };
