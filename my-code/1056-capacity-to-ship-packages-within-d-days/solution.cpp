@@ -1,6 +1,6 @@
 class Solution {
 public:
-   
+    //best solution:
     int solve(vector<int> &arr,int cap){
         int sum=0;
         int  cnt=0;
@@ -27,11 +27,11 @@ public:
     int shipWithinDays(vector<int>& arr, int D) {
         int low=1;
         int high=INT_MAX;
-        while(low<high){
+        while(low<=high){
             int mid = low+(high-low)/2;
             int day = solve(arr,mid);
             if(day<=D){
-                high=mid;
+                high=mid-1;
             }
             else{
                 low=mid+1;
