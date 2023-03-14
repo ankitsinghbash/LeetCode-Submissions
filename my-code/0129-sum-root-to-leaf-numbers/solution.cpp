@@ -10,33 +10,35 @@
  * };
  */
 class Solution {
-public:
-
-    void solve(TreeNode *root,string str,int &ans){
+ public:
    
-        if(root==NULL) return;
+   int  solve(TreeNode *root,int &sum,string str){
 
-
-        if(root->left==NULL && root->right==NULL){
-            str+=to_string(root->val);
-            ans+=stoi(str);
-            str.pop_back();
-            return;
-        }     
-
-
-        str+=to_string(root->val);
-        solve(root->left,str,ans);
-        solve(root->right,str,ans);
-  
-
+    if(root==NULL){
+        return 0;
     }
+    
+   
+     if(root->left==NULL && root->right==NULL){
+         str+=to_string(root->val);
+         sum+=stoi(str);
+         str.pop_back();
+         return sum;
+     }
+     
+
+     str+=to_string(root->val);
+     solve(root->left,sum,str);
+     solve(root->right,sum,str);
+   
+     return sum;
+   }
 
 
     int sumNumbers(TreeNode* root) {
-        int ans=0;
         string str = "";
-        solve(root,str,ans);
-        return ans;
+        int sum=0;
+        solve(root,sum,str);
+        return sum;
     }
 };
