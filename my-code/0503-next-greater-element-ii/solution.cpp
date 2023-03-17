@@ -1,45 +1,53 @@
 class Solution {
 public:
     vector<int> nextGreaterElements(vector<int>& nums) {
-        vector<int> ans;
-        for(int i=0;i<nums.size();i++)
-        {
-          int val = nums[i];
-          int j=i+1;
-          bool flag=true;
-          while(j!=nums.size())
-          {
-             if(nums[j]>nums[i])
-             {
-                 flag=false;
-                 ans.push_back(nums[j]);
-                 break;
-             }
-             j++;
-          }
+       vector<int> store;
+       for(int i=0;i<nums.size();i++){
+           store.push_back(nums[i]);
+       } 
+       for(int i=0;i<nums.size();i++){
+           store.push_back(nums[i]);
+       }
+       int n=nums.size()*2;
+       int new_arr[n];
+       for(int i=0;i<store.size();i++){
+           new_arr[i]=store[i];
+       }
 
+        stack<int> st;
+      
+        int ans[n];
 
-          int k=0;
-          bool flag2=true;
-          if(flag==true)
-          {
-            while(k<i)
-            {
-              if(nums[k]>nums[i])
-              {
-                  flag2=false;
-                  ans.push_back(nums[k]);
-                  break;
-              }
-              k++;
+        for(auto &x : new_arr){
+            cout<<x<<" ";
+        }   
+       cout<<endl;
+     
+        st.push(new_arr[n-1]);
+        ans[n-1]=-1;
+        
+        for(int i=n-2;i>=0;i--){
+            while(!st.empty() && new_arr[i]>=st.top()){
+                st.pop();
             }
-          }
-          if(flag==true&&flag2==true)
-          {
-              ans.push_back(-1);
-          }
-
+            if(st.empty()){
+                ans[i]=-1;
+            }
+            else{
+                ans[i]=st.top();
+            }
+            st.push(new_arr[i]);
         }
-       return ans; 
+
+       for(auto &x : ans){
+           cout<<x<<" ";
+       }
+     
+
+        vector<int> result;
+        for(int i=0;i<nums.size();i++){
+            result.push_back(ans[i]);
+        }
+        return result;
     }
 };
