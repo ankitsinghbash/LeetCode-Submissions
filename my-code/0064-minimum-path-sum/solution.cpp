@@ -18,10 +18,8 @@ public:
 
      
 
-        int right =grid[i][j]+solve(i,j+1,grid,n,m,dp);
-        int down =grid[i][j]+solve(i+1,j,grid,n,m,dp);
-        
-       return dp[i][j]=min(right,down);
+        int ans =grid[i][j]+min(solve(i+1,j,grid,n,m,dp),solve(i,j+1,grid,n,m,dp));
+       return dp[i][j]=ans;
     }
 
      int minPathSum(vector<vector<int>>& grid) {
