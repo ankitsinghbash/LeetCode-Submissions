@@ -1,17 +1,24 @@
 class Solution {
 public:
-    int maxSatisfaction(vector<int>& sat) {
-        int n=sat.size();
-        sort(sat.begin(),sat.end(),greater<int>());
-        vector<int>sum=sat;
-        for(int i=1;i<n;i++){
-            sum[i]+=sum[i-1];
+    
+    int solve(vector<int> &arr,int idx,int cnt,vector<vector<int>> &dp){
+        if(idx>=arr.size()){
+            return 0;   //minimum taken nahi karuga fir zero hoga answer:
         }
-        int mx=0,cur=0;
-        for(int i=0;i<n;i++){
-            cur+=sum[i];
-            mx=max(cur,mx);
+        
+        if(dp[idx][cnt]!=-1){
+            return dp[idx][cnt];
         }
-        return mx;
+        int pick = arr[idx]*cnt + solve(arr,idx+1,cnt+1,dp);
+        int notpick = 0+solve(arr,idx+1,cnt,dp);
+        return dp[idx][cnt]=max(pick,notpick);
+    }
+    
+    
+    int maxSatisfaction(vector<int>& satisfaction) {
+        
+        sort(satisfaction.begin(),satisfaction.end()); //because i have choise at each ki kisno pick karu sort karne se last me big value hogi means cnt ka multiple big value dega:
+        vector<vector<int>> dp(500,vector<int>(500,-1));
+        return solve(satisfaction,0,1,dp);
     }
 };
