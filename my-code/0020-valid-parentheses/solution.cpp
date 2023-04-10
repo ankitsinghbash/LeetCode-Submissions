@@ -1,21 +1,26 @@
 class Solution {
 public:
+    //st.size()!=0 for test case -> ']':
     bool isValid(string s) {
-        stack<char> st;
-        for(int i=0;i<s.size();i++)
-        {
-           char x=s[i];
-           if(x=='('||x=='{'||x=='[')
-                st.push(s[i]);
-           else if(st.size()!=0&&x==')'&&st.top()=='(')
-           st.pop();
-           else if(st.size()!=0&&x=='}'&&st.top()=='{')
-           st.pop();
-           else if(st.size()!=0&&x==']'&&st.top()=='[')
-           st.pop();
-           else
-               return false;
-        }
-        return st.empty();
+      stack<char> st;
+      for(int i=0;i<s.size();i++){
+          char ch = s.at(i);
+          if(ch=='(' || ch=='[' || ch=='{'){
+              st.push(ch);
+          }
+          else if(st.size()!=0 && ch==')' && st.top()=='('){
+              st.pop();
+          }
+          else if(st.size()!=0 && ch=='}' && st.top()=='{'){
+              st.pop();
+          }
+          else if(st.size()!=0 && ch==']' && st.top()=='['){
+             st.pop();
+          }
+          else{
+              return false;
+          }
+      }
+      return st.empty();
     }
 };
