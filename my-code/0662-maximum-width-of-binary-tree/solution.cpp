@@ -15,35 +15,32 @@ public:
         if(root==NULL){
             return 0;
         }
-
         queue<pair<TreeNode*,int>> qu;
-        qu.push({root,0});
-        int ans=0;
+        qu.push({root,1});
+        int maxx=0;
         while(!qu.empty()){
-
             int size = qu.size();
-            int mini =  qu.front().second;
-            int curr,last;
-             for(int i=0;i<size;i++){
-                pair<TreeNode*,int> P = qu.front();
+            int mini = qu.front().second;   //Each level ki first value:
+            int first,last;
+            for(int i=0;i<size;i++){
+                TreeNode *node = qu.front().first;
+                long long val = qu.front().second-mini;  //here is use long long:
                 qu.pop();
-                TreeNode *node = P.first;
-                long long  val = P.second-mini;
                 if(i==0){
-                    curr = val;
+                    first = val;
                 }
                 if(i==size-1){
                     last = val;
                 }
                 if(node->left!=NULL){
-                    qu.push({node->left,2*val+1});
+                     qu.push({node->left,val*2});
                 }
                 if(node->right!=NULL){
-                    qu.push({node->right,2*val+2});
+                    qu.push({node->right,val*2+1});
                 }
             }
-            ans=max(ans,last-curr+1);
+            maxx = max(maxx,last-first+1);
         }
-        return ans;
+        return maxx;
     }
 };
