@@ -1,30 +1,29 @@
 class Solution {
 public:
   
-   long long solve(vector<int> &nums,int n,int idx,long long ans,vector<int> &dp){
- 
-       if(idx>=n-1){
-           return 0;  //at last index 0 jump:
-       }
- 
-      if(dp[idx]!=-1){
-          return dp[idx];
-      }
+   int dp[10001];
+   long long solve(int start,int n,vector<int> &nums){
+     if(start>=n-1){
+         return 0;
+     }
+     
+     if(dp[start]!=-1){
+         return dp[start];
+     }
 
-        long long  mini = INT_MAX;
-        for(int i=1;i<=nums[idx];i++){
-            ans = 1+solve(nums,n,idx+i,ans,dp);
-            mini = min(mini,ans);
-        }
- 
-       return dp[idx]=mini;
+     long long mini=INT_MAX;
+     for(int k=1;k<=nums[start];k++){
+         long long ans=1+solve(start+k,n,nums);
+         mini=min(ans,mini);
+     }
+     return dp[start] = mini;
+
    }
- 
- 
-    int jump(vector<int>& nums)  {
-        
+   
+
+    int jump(vector<int>& nums) {
         int n=nums.size();
-        vector<int> dp(n+1,-1);
-        return solve(nums,n,0,0,dp);
+        memset(dp,-1,sizeof(dp));
+        return solve(0,n,nums);
     }
 };
