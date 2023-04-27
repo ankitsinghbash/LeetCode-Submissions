@@ -2,33 +2,33 @@ class Solution {
 public:
     int addMinimum(string word) {
         stack<char> st;
-        for(int i=0;i<word.size();i++)
-        {
-            st.push(word[i]);
+        for(char ch : word){
+            st.push(ch);
         }
-        int count=0;
-        while(!st.empty())
-        {
+        
+        int cnt=0;
+        while(!st.empty()){
             if(st.size()!=0 && st.top()=='c'){
-            st.pop();
+                st.pop();
             }
             else{
-            count++;
+                cnt++;
             }
             if(st.size()!=0 && st.top()=='b'){
-                      st.pop();
-            } 
+                 st.pop();    
+            }
             else{
-            count++;
+                cnt++;
             }
             if(st.size()!=0 && st.top()=='a'){
-            st.pop();
+                st.pop();
             }
             else{
-            count++;
+                cnt++;
             }
             
         }
-        return count;
+        return cnt;
+        
     }
 };
