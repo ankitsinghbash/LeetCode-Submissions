@@ -11,28 +11,31 @@
  */
 class Solution {
 public:
- 
-   TreeNode *solve(vector<int> &inorder,vector<int> &postorder,int inStart,int inEnd,int pStart,int pEnd){
+   TreeNode *solve(int inStart,int inEnd,int pStart,int pEnd,vector<int> inorder,vector<int> postorder){
+       if(pStart>pEnd || inStart>inEnd){
+           return NULL;
+       }
 
-    if(pStart>pEnd || inStart>inEnd){  //base case : Write only one is also satisfied the base case:  
-        return NULL;
-    }
-    
-     TreeNode *root = new TreeNode(postorder[pEnd]);
 
-    int i = inStart; 
-    for(;i<=inEnd;i++){     //find the root postion in the inorder:
-        if(inorder[i]==root->val){
-            break;
-        }
-    }
- 
-    int leftsize = i-inStart;   //inorder me left size:
-    int rightsize = inEnd - i;    //inorder me right size:
-   root->left = solve(inorder,postorder,inStart,i-1,pStart,pStart+leftsize-1);//we pass new inorder and new postorder at left side wala:
-     root->right = solve(inorder,postorder,i+1,inEnd,pEnd-rightsize,pEnd-1);//we pass new inorder and new postorder at right side wala:
-     return root;
+       TreeNode *root = new TreeNode(postorder[pEnd]);
+
+       int i=inStart;
+       for(;i<=inEnd;i++){
+           if(root->val==inorder[i]){
+               break;
+           }
+       }
+   
+       int left_ = i-inStart;
+       int right_ = inEnd-i;
+       
+       root->left = solve(inStart,i-1,pStart,pStart+left_ -1,inorder,postorder);
+       root->right = solve(i+1,inEnd,pEnd-right_,pEnd - 1,inorder,postorder);
+
+       return root;
+
    }
+   
 
 
 
@@ -41,6 +44,6 @@ public:
         int inEnd = inorder.size()-1;
         int pStart = 0;
         int pEnd = postorder.size()-1;
-        return solve(inorder,postorder,inStart,inEnd,pStart,pEnd);
+        return solve(inStart,inEnd,pStart,pEnd,inorder,postorder);
     }
 };
