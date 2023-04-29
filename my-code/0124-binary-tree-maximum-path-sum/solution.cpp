@@ -11,27 +11,27 @@
  */
 class Solution {
 public:
-    int ans;
-    int dfs(TreeNode *root){
-       if(root==NULL){
-           return 0;
-       }
-    
-      int l = dfs(root->left);
-      int r = dfs(root->right);
-      
-      int koi_ek_acha = max(l,r)+root->val;
-      int only_root_acha = root->val;
-      int nicha_hi_mil_gya = l+r+root->val;
-    
-      ans = max({ans,koi_ek_acha,only_root_acha,nicha_hi_mil_gya});
+ 
+   int solve(TreeNode *root,int &ans){
+     if(root==NULL) return 0;
 
-       return max(koi_ek_acha,only_root_acha);
-    }
+
+     int l = solve(root->left,ans);
+     int r = solve(root->right,ans);
+
+     int only_root = root->val;
+     int nicha_mil_gya = l+r+root->val;
+     int koi_ek_acha = max(l,r)+root->val;
+
+     ans = max({ans,only_root,nicha_mil_gya,koi_ek_acha});
+
+     return max(only_root,koi_ek_acha);
+     
+   }
 
     int maxPathSum(TreeNode* root) {
-        ans=INT_MIN;
-        dfs(root);
+        int ans = INT_MIN;
+        solve(root,ans);
         return ans;
     }
 };
