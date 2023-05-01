@@ -10,18 +10,26 @@
 
 class Solution {
 public:
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-  
-        //base case:
+  TreeNode *solve(TreeNode *root,TreeNode *p,TreeNode *q){
+    
+    //dry run for 3->1
+    //note that order of if and else if fix:otherwise dry on 3,1 test case: 
+     if(p->val<root->val && q->val < root->val){
+         return solve(root->left,p,q);
+     }
+     else if(p->val>root->val && q->val>root->val){
+         return solve(root->right,p,q);
+     }
+     else{
+         return root;
+     }
 
-        if(p->val<root->val&&q->val<root->val){
-            return lowestCommonAncestor(root->left,p,q);
-        }
-        else if(p->val>root->val&&q->val>root->val){
-            return lowestCommonAncestor(root->right,p,q);
-        }
-        else{
-            return root;
-        }
+  }
+
+
+
+
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        return solve(root,p,q);
     }
 };
