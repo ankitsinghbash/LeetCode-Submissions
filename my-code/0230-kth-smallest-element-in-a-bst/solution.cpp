@@ -11,45 +11,21 @@
  */
 class Solution {
 public:
+    vector<int> ans;
+    void solve(TreeNode *root,int k){
+       if(root==NULL) return; 
+
   
-    void solve(TreeNode *root,vector<int> &ans){
-      if(root==NULL) return;
-
-
-        solve(root->left,ans);
-        ans.push_back(root->val);
-        solve(root->right,ans);
+       solve(root->left,k);
+       ans.push_back(root->val);
+       solve(root->right,k);
     }
+ 
+
+
 
     int kthSmallest(TreeNode* root, int k) {
-        vector<int> ans;
-        solve(root,ans);
-        sort(ans.begin(),ans.end());
-        return ans[k-1];
-
+       solve(root,k);
+       return ans[k-1];
     }
 };
-
-
-// class Solution {
-// public:
- 
-//    void Inorder(TreeNode *root,vector<int> &ans){
-
-//       if(root==NULL) return;
-
-//       Inorder(root->left,ans);
-//       ans.push_back(root->val);
-//       Inorder(root->right,ans);
-
-
-//    }
-   
- 
-//     int kthSmallest(TreeNode* root, int k) {
-//         vector<int> ans;
-//         Inorder(root,ans);
-//         return ans[k-1];
-        
-//     }
-// };
