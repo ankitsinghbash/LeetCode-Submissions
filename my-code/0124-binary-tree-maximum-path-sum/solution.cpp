@@ -11,23 +11,27 @@
  */
 class Solution {
 public:
- 
-   int solve(TreeNode *root,int &ans){
-     if(root==NULL) return 0;
+    int solve(TreeNode *root,int &ans){
+      if(root==NULL){
+        return 0;
+      }
+  
+      int left =  solve(root->left,ans);
+      int right = solve(root->right,ans);
 
 
-     int l = solve(root->left,ans);
-     int r = solve(root->right,ans);
+      int first = max(left,right)+root->val;
+      int second = root->val;
+      int third = left+right+root->val;
+   
+      ans = max({ans,first,second,third});
 
-     int only_root = root->val;
-     int nicha_mil_gya = l+r+root->val;
-     int koi_ek_acha = max(l,r)+root->val;
+      return max(first,second);   //third isslyia nahi because root->ek path me hona chayia: agar third return means we break the condition of path:
+   
+    }
 
-     ans = max({ans,only_root,nicha_mil_gya,koi_ek_acha});
 
-     return max(only_root,koi_ek_acha);
-     
-   }
+
 
     int maxPathSum(TreeNode* root) {
         int ans = INT_MIN;
