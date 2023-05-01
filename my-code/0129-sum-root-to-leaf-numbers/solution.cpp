@@ -11,27 +11,31 @@
  */
 class Solution {
 public:
-    int sum=0;
-    void solve(TreeNode *root,string str){
-     if(root==NULL) return;
-   
-     str+=to_string(root->val);
-     if(root->left==NULL && root->right==NULL){
-         int val = stoi(str);
-         sum+=val;
-     }
+  
+   void solve(TreeNode *root,int &sum,string str){
+       if(root==NULL){
+           return;
+       }
+ 
+        
+       str+=to_string(root->val);
+       if(root->left==NULL && root->right==NULL){
+            sum+=stoi(str);
+            str.pop_back();
+            return;
+       }
+ 
+      solve(root->left,sum,str);
+      solve(root->right,sum,str);
+      str.pop_back();
+   }
 
-     solve(root->left,str);
-     solve(root->right,str);
-     str.pop_back();
-    }
+ 
 
-
-
-
-
+ 
     int sumNumbers(TreeNode* root) {
-        solve(root,"");
+        int sum = 0;
+        solve(root,sum,"");
         return sum;
     }
 };
