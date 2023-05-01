@@ -11,25 +11,24 @@
  */
 class Solution {
 public:
-    int ans=0;
-    void dfs(TreeNode *root,bool val){
-
-      if(root==NULL){
-          return;
-      }
-
-      if(val==true && root->left==NULL && root->right == NULL){
-          ans+=root->val;
-      }
-
-   
-       dfs(root->left,true);
-       dfs(root->right,false);
-
+   int sum=0;
+   void solve(TreeNode *root,bool check){
+    if(root==NULL){
+        return;
     }
+ 
+    if(check == false && root->left==NULL && root->right==NULL){
+        sum+=root->val;
+    }
+      solve(root->left,false);
+      solve(root->right,true);
+   }
+ 
+
+
     int sumOfLeftLeaves(TreeNode* root) {
-        bool val = false;
-        dfs(root,val);
-        return ans;
+        bool val = true;
+        solve(root,val);
+        return sum;
     }
 };
