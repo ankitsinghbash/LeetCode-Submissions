@@ -17,7 +17,7 @@ public:
 
          for(auto it = s2.begin();it!=s2.end();it++){
             auto it2 = s1.find(*it);
-            if(it2==s2.end()){
+            if(it2==s1.end()){
                 second.push_back(*it);
             }
         }
