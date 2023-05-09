@@ -1,44 +1,38 @@
 class Solution {
 public:
+    vector<int> ans;
     vector<int> spiralOrder(vector<vector<int>>& matrix) {
-        
-        //for understanding open same quesiton in gfg:
-        
-        int r = matrix.size();
-        int c = matrix[0].size();
-        int count = 0;
-        int firstr = 0;
-        int lastr = r-1;
-        int firstc = 0;
-        int lastc = c-1;
-        int total = r*c;
-        vector<int> v;
-        while(count<total){
-            for(int i =firstc;count<total && i<=lastc;i++){
-                // cout<<matrix[firstr][i];
-                v.push_back(matrix[firstr][i]);
-                count++;
-            }
-            firstr++;
-            for(int i =firstr;count<total && i<=lastr;i++){
-                // cout<<matrix[i][lastc];
-                v.push_back(matrix[i][lastc]);
-                count++;
-            }
-            lastc--;
-            for(int i =lastc;count<total && i>=firstc;i--){
-                // cout<<matrix[lastr][i];
-                v.push_back(matrix[lastr][i]);
-                count++;
-            }
-            lastr--;
-            for(int i =lastr;count<total && i>=firstr;i--){
-                // cout<<matrix[i][firstc];
-                v.push_back(matrix[i][firstc]);
-                count++;
-            }
-            firstc++;
+        int minrow = 0;
+        int maxrow = matrix.size()-1;
+        int mincol = 0;
+        int maxcol =  matrix[0].size()-1;
+
+        int total = matrix.size()*matrix[0].size();
+
+        int counter = 1;
+        while(counter<=total){
+ 
+          for(int j=mincol;j<=maxcol && counter<=total;j++){
+              ans.push_back(matrix[minrow][j]);
+              counter++;
+          }    
+          minrow++;
+          for(int i=minrow;i<=maxrow && counter<=total;i++){
+              ans.push_back(matrix[i][maxcol]);
+              counter++;
+          }
+          maxcol--;
+          for(int j=maxcol;j>=mincol && counter<=total;j--){
+              ans.push_back(matrix[maxrow][j]);
+              counter++;
+          }
+          maxrow--;
+          for(int i = maxrow;i>=minrow && counter<=total;i--){
+              ans.push_back(matrix[i][mincol]);
+              counter++;
+          }
+          mincol++;
         }
-        return v;
+        return ans;
     }
 };
