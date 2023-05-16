@@ -10,16 +10,19 @@
  */
 class Solution {
 public:
-    ListNode* swapPairs(ListNode* head) {
-        //using recursion:
-  
-        if(head==NULL || head->next==NULL){
-            return head;
-        }
+   ListNode *solve(ListNode *head){
+      if(head==NULL || head->next==NULL) return head;
+ 
+      ListNode *temp = head->next;
+      head->next = solve(head->next->next);
+      temp->next = head;
+      return temp;
 
-        ListNode *temp = head->next;
-        head->next=swapPairs(head->next->next);
-        temp->next=head;
-        return temp;
+   }
+   
+    
+
+    ListNode* swapPairs(ListNode* head) {
+        return solve(head);
     }
 };
