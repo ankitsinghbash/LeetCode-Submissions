@@ -8,54 +8,20 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
- /*
-class Solution {
-public:
-    ListNode* reverseList(ListNode* head) {
-        if(head==NULL)
-        {
-            return head;
-        }
-        ListNode *temp=head;
-        ListNode *prev = NULL;
-        ListNode *current=NULL;
-         
-        while(temp!=NULL)
-        {
-            current=temp->next;
-            temp->next=prev;
-            
-            prev=temp;
-            temp=current;
-        }
-       return prev;
-    }
-};
-
-*/
-//recursive approach:
 class Solution {
 public:
    
-   ListNode *reverseLL(ListNode *current,ListNode *prev)
-   {
-    
-     //base case:
-     if(!current)
-     {
-         return prev;
-     }
-    
-     ListNode *temp = current->next;
-     current->next=prev;
-     return reverseLL(temp,current);
+   ListNode *solve(ListNode *head,ListNode *prev){
+     if(head==NULL) return prev;
+  
+     ListNode *temp = head->next;
+     head->next=prev;
+     return solve(temp,head);
    }
 
+
+
     ListNode* reverseList(ListNode* head) {
-       return reverseLL(head,NULL);
-       
+        return solve(head,NULL);
     }
 };
-
- 
-   
