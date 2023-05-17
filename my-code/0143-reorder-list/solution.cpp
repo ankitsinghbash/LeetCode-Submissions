@@ -27,7 +27,7 @@ public:
 
     void reorderList(ListNode* head) {
 
-         if(!head->next) return;
+ //        if(!head->next) return;
 
 
       ListNode *slow = head;
@@ -37,14 +37,14 @@ public:
           fast=fast->next->next;
       }
 
-      ListNode *dummy = reverseList(slow);
+      ListNode *dummy = reverseList(slow);  //dummy not only give the head: //it's given a new linkedlist with dummy as a head:
 
       ListNode *curr = head;
       ListNode *LLhalf = dummy;
   
       ListNode *curr_next=NULL;
       ListNode *temp = NULL;
-      while(curr->next!=NULL && LLhalf->next!=NULL){
+      while(curr->next!=NULL && LLhalf->next!=NULL){    //both condition is required because they are two diff Linkedlist and it helf in when an odd number of node in original LinkList:
           curr_next = curr->next;
           curr->next = LLhalf;
           temp = LLhalf->next;
