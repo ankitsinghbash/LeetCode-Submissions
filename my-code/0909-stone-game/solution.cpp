@@ -1,30 +1,18 @@
 class Solution {
 public:
-  
-   int solve(int a,int b,vector<int> &piles,vector<vector<int>> &dp){
-       if(a==b) return piles[a];   
- 
-       if(dp[a][b]!=-1){
-           return dp[a][b];
-       }
-  
-       int first = piles[a]+solve(a+1,b,piles,dp);
-       int last = piles[b]+solve(a,b-1,piles,dp);
-       return dp[a][b]=max(first,last);  //because both play optimally:
-   }
- 
- 
     bool stoneGame(vector<int>& piles) {
-
-        int n=piles.size();
-        vector<vector<int>> dp(n+1,vector<int>(n+1,-1));
-        int myscore = solve(0,n-1,piles,dp);
-        int total = 0;
-        for(int i=0;i<piles.size();i++){
-            total+=piles[i];
+        //Greedy approach Game theory:
+         //another approch odd ,even positon technique not use here but important in game theory:
+        //If alice max taken kare then bob min taken kar game theory concep say that:
+        int alice=0,bob=0;
+        int low=0;
+        int high=piles.size()-1;
+        while(low<high){
+            alice+=max(piles[low],piles[high]);
+            bob+=min(piles[low],piles[high]);
+            low++;
+            high--;
         }
-        int opp_score = total-myscore;
-        if(myscore>opp_score) return true;
-        else return false;
+        return alice>bob;
     }
 };
