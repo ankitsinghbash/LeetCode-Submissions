@@ -1,23 +1,23 @@
 
 class Solution {
 public:
-    
-    int helper(int n,vector<int> &dp)
+    int helper(int n,unordered_map<int,int> &dp)
     {
         if(n==0||n==1)
         {
             return n;
         }
 
-        if(dp[n]!=-1)
-           return dp[n];
+      if(dp.find(n)!=dp.end()){
+          return dp[n];
+      }
         
       int ans=helper(n-1,dp)+helper(n-2,dp);
       return dp[n]=ans;
     }
 
     int fib(int n) {
-        vector<int> dp(n+1,-1);
+        unordered_map<int,int> dp;
          int solution = helper(n,dp); 
          return solution;
     }
