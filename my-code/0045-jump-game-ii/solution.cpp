@@ -1,13 +1,14 @@
 class Solution {
 public:
   
-   int dp[10001];
+   //int dp[10001];
+   unordered_map<int,int> dp;
    long long solve(int start,int n,vector<int> &nums){
      if(start>=n-1){
          return 0;
      }
      
-     if(dp[start]!=-1){
+     if(dp.find(start)!=dp.end()){
          return dp[start];
      }
 
@@ -23,7 +24,7 @@ public:
 
     int jump(vector<int>& nums) {
         int n=nums.size();
-        memset(dp,-1,sizeof(dp));
+//memset(dp,-1,sizeof(dp));
         return solve(0,n,nums);
     }
 };
