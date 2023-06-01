@@ -1,7 +1,7 @@
 class Solution {
 public:
+   // also solve by BFS:
    vector<vector<int>> direction = {{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}};
- 
    bool isSafe(int i,int j,vector<vector<int>> &grid){
        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size()){
            return false;
@@ -23,7 +23,7 @@ public:
         vector<vector<int>> result(n,vector<int>(m,INT_MAX));
         pq.push({0,{0,0}});
         result[0][0]=0;
-        grid[0][0]=1;
+      //  grid[0][0]=1; //You may write but not need because it's a Dikjstra algo it check for all possible and update result only if the new distance is shortest then previous one:
 
 
         while(!pq.empty()){
@@ -44,7 +44,8 @@ public:
                     if(isSafe(x_,y_,grid) && grid[x_][y_]==0 && d+dist<result[x_][y_]){
                         result[x_][y_] = d+dist;
                         pq.push({d+dist,{x_,y_}});
-                        grid[x_][y_]=1;
+                       // grid[x_][y_]=1; //You may write but not need because it's a Dikjstra algo it check for all possible and update result only if the new distance is shortest then previous one:
+
                     }
                 }
             }
