@@ -4,8 +4,6 @@ public:
     int maxx = 0;
    void dfs(int u,unordered_map<int,vector<int>> &adj,vector<int> &info){
         
-    
-    
      for(auto v : adj[u]){
          ans+=info[u];
          maxx=max(maxx,ans);
