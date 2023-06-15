@@ -11,27 +11,25 @@
  */
 class Solution {
 public:
-    
-   void dfs_order(TreeNode *root,vector<int> &ans){
-  
-      if(root==NULL) return;
+ 
+   void solve(vector<int> &store,TreeNode *root){
+       if(root==NULL) return;
 
-        ans.push_back(root->val);
-       dfs_order(root->left,ans);
-      // ans.push_back(root->val);
-       dfs_order(root->right,ans);
-
+       store.push_back(root->val);
+       solve(store,root->left);
+       solve(store,root->right);
    }
-  
+
 
     int getMinimumDifference(TreeNode* root) {
-        vector<int> ans;
-        dfs_order(root,ans);
-        sort(ans.begin(),ans.end());
+        vector<int> store;
+        solve(store,root);
         int mini = INT_MAX;
-        for(int i=1;i<ans.size();i++){
-            mini=min(mini,ans[i]-ans[i-1]);
+        sort(store.begin(),store.end());
+        for(int i=1;i<store.size();i++){
+            mini = min(mini,store[i]-store[i-1]);
         }
         return mini;
+
     }
 };
