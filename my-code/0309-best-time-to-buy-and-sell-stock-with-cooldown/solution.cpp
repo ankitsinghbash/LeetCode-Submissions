@@ -1,22 +1,34 @@
 class Solution {
 public:
-    //Four type of day happen:
-    //1->buy,sell,noop and cooldown:
-    //In this type of category with remdem updation always use updated dp algo:
+   int solve(vector<int> &prices,bool buy,int idx,vector<vector<int>> &dp){
+ 
+     if(idx>=prices.size()) return 0;
+
+     if(dp[idx][buy]!=-1) return dp[idx][buy];
+ 
+
+     int profit = 0;
+     if(buy==true){
+         int taken = solve(prices,false,idx+1,dp)-prices[idx];
+         int nottaken = solve(prices,true,idx+1,dp);
+         return  dp[idx][buy] = max({profit,taken,nottaken});
+     }
+     else{
+        int sell = prices[idx]+solve(prices,true,idx+2,dp);
+        int notsell  = solve(prices,false,idx+1,dp);
+        return dp[idx][buy] = max({profit,sell,notsell});
+     }
+   
+      return  dp[idx][buy] = profit;
+
+   }
+
+
+
+
     int maxProfit(vector<int>& prices) {
-       int n=prices.size();
-       vector<int> dp(n);
-       int buy = INT_MIN;
-       int noop = INT_MIN;
-       int cooldown = 0;
-       int sell = 0;
-       for(int i=0;i<n;i++){
-           noop = max(noop,buy);
-           buy = cooldown - prices[i];
-           cooldown = max(cooldown,sell);
-           sell = noop + prices[i];
-           dp[i]=max(cooldown,sell);
-       }
-       return dp[n-1];
+        int idx=0;
+        vector<vector<int>> dp(prices.size(),vector<int>(2,-1));
+        return solve(prices,true,idx,dp);
     }
 };
