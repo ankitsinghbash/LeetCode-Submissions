@@ -1,38 +1,38 @@
 class Solution {
 public:
+    vector<vector<string>> store;
+    bool ispalindromic(int start,int last,string &s){
+      while(start<=last){
+          if(s[start]!=s[last]){
+              return false;
+          }
+          start++;
+          last--;
+      }
+      return true;
+    }
 
-   bool ispalindrome(string s,int start,int last){
-       while(start<=last){
-           if(s[start++]!=s[last--]){
-               return false;
-           }
-          
-       }
-       return true;
-   }
 
-   void solve(vector<vector<string>> &ans,string s,vector<string> &path,int idx,int n){
-
-     if(idx==n){
-         ans.push_back(path);
+    void solve(string s,int idx,vector<string> &path){
+     if(idx==s.size()){
+         store.push_back(path);
          return;
      }
 
-     for(int i=idx;i<n;i++){
-         if(ispalindrome(s,idx,i)){
-             path.push_back(s.substr(idx,i-idx+1));
-            solve(ans,s,path,i+1,n);
-            path.pop_back();
-         }
-     }
-   }
+      for(int i=idx;i<s.size();i++){
+          if(ispalindromic(idx,i,s)){
+             string str = s.substr(idx,i-idx+1);
+             path.push_back(str);
+             solve(s,i+1,path);
+             path.pop_back();
+          }
+      }
+    }
 
 
     vector<vector<string>> partition(string s) {
-        vector<vector<string>> ans;
         vector<string> path;
-        int n = s.size();
-        solve(ans,s,path,0,n);
-        return ans;
+        solve(s,0,path);
+        return store;
     }
 };
