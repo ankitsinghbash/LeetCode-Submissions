@@ -1,24 +1,14 @@
 class Solution {
 public:
-    int maxx = INT_MIN;
-    int solve(vector<int> &nums,int n,int idx,int sum){
- 
-        if(idx>=n){
-          return 0;
-        }
-  
-        sum+=nums[idx]+solve(nums,n,idx+1,sum);
-        maxx=max(maxx,sum);
-        if(sum<0){
-          sum=0;
-        }
-        
-        return sum;
-     }
- 
     int maxSubArray(vector<int>& nums) {
-        int n=nums.size();
-        solve(nums,n,0,0);
-        return maxx;    
+        int n = nums.size();
+        int dp[n];
+        dp[0]=nums[0];
+        int maxx = nums[0];
+        for(int i=1;i<nums.size();i++){
+            dp[i]=max(nums[i],dp[i-1]+nums[i]);
+            maxx = max(maxx,dp[i]);
+        }
+        return maxx;
     }
 };
