@@ -1,42 +1,36 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        //Check GfG List of same problem explain with good example:
-        int n=height.size();
-        
-        vector<int> L;
-        vector<int> R;
-        int data=0;  //just a varible for compair a positive value:
-        for(int i=0;i<n;i++)
-        {
-            if(height[i]>data)
-            {
-                data=height[i];
+        //O(n):
+        int n = height.size();
+        vector<int> L(n);
+        int data1=0;
+        for(int i=0;i<n;i++){
+            if(height[i]>data1){
+                data1=height[i];
             }
-            L.push_back(data);
+            L[i]=data1;
         }
-        
-        data=0;   //just a variable for compair the positive value:
-        for(int i=n-1;i>=0;i--)
-        {
-            if(height[i]>data)
-            {
-                data=height[i];
+
+  
+        vector<int> R(n);
+        int j=0;
+        int data2=0;
+        for(int i=n-1;i>=0;i--){
+            if(height[i]>data2){
+                data2=height[i];
             }
-            R.push_back(data);
+            R.push_back(data2);
         }
-        
-        //reverse the R for find the correct R:
+
         reverse(R.begin(),R.end());
-        
-        int total_water=0;
-        
-        //formula total_water=min(L[i],R[i])-heigh[i];  Use in each iteration:
-        for(int i=0;i<n;i++)
-        {
-            int mini=min(L[i],R[i]);
-            total_water+=mini-height[i];
+
+        int water = 0;
+        for(int i=0;i<n;i++){
+            int value = min(L[i],R[i])-height[i];
+            water+=value;
         }
-        return total_water;
+        return water;
+
     }
 };
