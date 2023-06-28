@@ -1,30 +1,28 @@
 class Solution {
 public:
-  
-   //int dp[10001];
-   unordered_map<int,int> dp;
-   long long solve(int start,int n,vector<int> &nums){
-     if(start>=n-1){
-         return 0;
-     }
-     
-     if(dp.find(start)!=dp.end()){
-         return dp[start];
-     }
-
-     long long mini=INT_MAX;
-     for(int k=1;k<=nums[start];k++){
-         long long ans=1+solve(start+k,n,nums);
-         mini=min(ans,mini);
-     }
-     return dp[start] = mini;
-
-   }
-   
-
     int jump(vector<int>& nums) {
-        int n=nums.size();
-//memset(dp,-1,sizeof(dp));
-        return solve(0,n,nums);
+
+        //tabulation:
+        int n = nums.size();
+        vector<int> dp(nums.size(),0);
+        for(int i=n-2;i>=0;i--){
+               int mini = INT_MAX;
+               int step = nums[i];
+               if(step>0){
+                   for(int j=1;j<=step;j++){
+                       if(i+j<nums.size()){
+                           mini = min(mini,dp[i+j]);
+                       }
+                   }
+               }
+               if(mini==INT_MAX){
+                    dp[i]=mini;
+               }
+               else{
+                   dp[i]=mini+1;
+               }
+
+        }
+        return dp[0];
     }
 };
