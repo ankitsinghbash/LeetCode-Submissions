@@ -1,32 +1,27 @@
 class Solution {
 public:
-   vector<string> ans;
-    void helper(int n,int r,string path)
-    {
-      //base when n and r both become 0: return ans:
-      if(n==0&&r==0)
-      {
-          ans.push_back(path);
-          return;
-      }
+   void solve(string path,vector<string> &ans,int n,int r){
 
-      if(n>0)
-       {
-           helper(n-1,r+1,path+'(');
+       if(n==0 && r==0){
+           ans.push_back(path);
+           return;
        }
-      
-      if(r>0)
-      {
-          helper(n,r-1,path+')');
-      }
+
+       if(n>0){
+       solve(path+"(",ans,n-1,r+1);
+       }
+       if(r>0){
+            solve(path+")",ans,n,r-1);
+       }
+
+   }
 
 
-    }
 
     vector<string> generateParenthesis(int n) {
-        int r=0;
         string path;
-        helper(n,r,path);   //find for most simple string->()() n=2 and for n=3->()()() it's visilution is very easy:
+        vector<string> ans;
+        solve(path,ans,n,0);
         return ans;
     }
 };
