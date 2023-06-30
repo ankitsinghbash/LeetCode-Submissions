@@ -1,35 +1,35 @@
 class Solution {
 public:
-    int mod=1e9+7;
+   const int mod = 1e9+7;
+   int solve(vector<int> &locations,int start,int finish,int fuel,vector<vector<int>> &dp){
+       
+       if(fuel<0) return 0;
+
     
-    int helper(vector<vector<int>>&dp,vector<int>&locations,int current,int &finish,int fuel, int n){
-
-        if(fuel<0)
-        return 0;
-
-        if(dp[current][fuel]!=-1)
-         return dp[current][fuel];
-
-        int ans=0;
-
-        if(current==finish)
-        ans++;
-
-        for(int next=0;next<n;next++)
-            if(next!=current)
-                ans=(ans%mod+helper(dp,locations,next,finish,fuel-abs(locations[current]-locations[next]),n)%mod)%mod;
-         
-
-        return dp[current][fuel]=ans%mod;
-    }
+       if(dp[start][fuel]!=-1){
+           return dp[start][fuel];
+       }
 
 
-    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+       int ans=0;
+       if(start==finish){
+           ans++;
+       }
 
-        int n=locations.size();
+       for(int idx=0;idx<locations.size();idx++){
+           if(idx!=start){
+                ans=(ans%mod+solve(locations,idx,finish,fuel-abs(locations[start]-locations[idx]),dp)%mod)%mod;
+           }
+       }
+     return  dp[start][fuel] =  (ans%mod);     
+   }
 
-        vector<vector<int>>dp(n,vector<int>(fuel+1,-1));
 
-        return helper(dp,locations,start,finish,fuel,n);
+
+
+
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel){
+        vector<vector<int>> dp(locations.size(),vector<int>(fuel+1,-1));
+        return solve(locations,start,finish,fuel,dp);
     }
 };
