@@ -1,19 +1,26 @@
 class Solution {
 public:
     int singleNumber(vector<int>& nums) {
-        unordered_map<int,int> mp;
-        for(int i=0;i<nums.size();i++)
-        {
-            mp[nums[i]]++;
-        }
-        vector<int> ans;
-        for(auto it = mp.begin();it!=mp.end();it++)
-        {
-            if(it->second<3)
-            {
-               return it->first;
+        //bits masking //codestory with mike:
+        int result =0;
+        for(int k=0;k<=31;k++){
+            int temp=(1<<k);
+            int cnt_one = 0;
+            int cnt_zero =0;
+
+            for(auto x: nums){
+                if((x&temp)==0){
+                    cnt_zero++;
+                }
+                else{
+                    cnt_one++;
+                }
+            }
+            if(cnt_one%3==1){
+                result = (result|(1<<k));
             }
         }
-        return -1;
+        return result;
+
     }
 };
