@@ -1,16 +1,6 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
- * };
- */
 class Solution {
 public:
 
-   
    void make_parent(TreeNode *root,unordered_map<TreeNode*,TreeNode*> &mp){
         queue<TreeNode*> qu;
         qu.push(root);
