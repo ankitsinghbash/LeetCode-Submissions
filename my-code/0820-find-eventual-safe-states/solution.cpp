@@ -2,43 +2,39 @@ class Solution {
 public:
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
         unordered_map<int,vector<int>> adj;
-       
-        int V =graph.size();
-       
+        int V = graph.size();
         vector<int> indegree(V,0);
-        for(int i=0;i<V;i++){
-            for(auto &x : graph[i]){
-                adj[x].push_back(i);  //reverse the edge:   x-->i
-                indegree[i]++;     
-                //adj[i].push_back(x);
+        for(int i=0;i<graph.size();i++){
+            for(int j=0;j<graph[i].size();j++){
+                int data = graph[i][j];
+                adj[data].push_back(i);
+                indegree[i]++;
             }
         }
 
-        queue<int> qu;  //put all indegree in queue:
-        for(int i=0;i<V;i++){
+        queue<int> qu;
+        for(int i=0;i<indegree.size();i++){
             if(indegree[i]==0){
                 qu.push(i);
             }
         }
 
-        vector<int> ans;
-        while(!qu.empty()){
-            int node = qu.front();
-            qu.pop();
-            ans.push_back(node);
-            for(auto &x : adj[node]){
-                indegree[x]--;
-                if(indegree[x]==0){
-                    qu.push(x);
+      vector<int> store;
+       while(!qu.empty()){
+            int size = qu.size();
+            while(size--){
+                int node = qu.front();
+                qu.pop();
+                store.push_back(node);
+                for(auto &v : adj[node]){
+                    indegree[v]--;
+                    if(indegree[v]==0){
+                        qu.push(v);
+                    }
                 }
             }
-        }
-        sort(ans.begin(),ans.end());
-        return ans;
-
-
-      
-
-
-    }
+       }
+       sort(store.begin(),store.end());
+       return store;    
+  }
 };
