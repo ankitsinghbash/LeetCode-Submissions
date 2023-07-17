@@ -11,18 +11,21 @@
  */
 class Solution {
 public:
-   
-   bool solve(TreeNode *root,long long maxx,long long mini){
+   bool solve(TreeNode *root,long long int maxx,long long int mini){
        if(root==NULL) return true;
+    
 
        if(root->val<=mini || root->val>=maxx){
            return false;
        }
 
-       return solve(root->left,root->val,mini) && solve(root->right,maxx,root->val);
-       
+      bool left = solve(root->left,root->val,mini);
+      bool right = solve(root->right,maxx,root->val);
 
+      return left&&right;
    }
+
+
 
 
     bool isValidBST(TreeNode* root) {
