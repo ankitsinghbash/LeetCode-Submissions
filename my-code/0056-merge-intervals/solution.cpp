@@ -1,27 +1,37 @@
 class Solution {
 public:
-
    static bool cmp(vector<int> &a,vector<int> &b){
        return a[0]<b[0];
    }
 
+
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
         sort(intervals.begin(),intervals.end(),cmp);
-    
-        //best way to merge two intervals:
-        vector<vector<int>> ans;
-        vector<int> temp = intervals[0];
-        for(auto &it : intervals){
-            if(temp[1]>=it[0]){
-                temp[1]=max(temp[1],it[1]);
-            }
-            else
-            {
-                ans.push_back(temp);
-                temp=it;
-            }
+  
+        vector<vector<int>> store;
+        vector<int> prev = intervals[0];
+        int i=1;
+        int n = intervals.size();
+        while(i<n){
+            vector<int>  curr = intervals[i];
+
+            int prevend = prev[1];
+            int currstart = curr[0];
+            int currend = curr[1];
+            if(prevend<currstart){
+                store.push_back(prev);
+                prev = curr;
+                i++;
+            } 
+            else{  //overlap:
+                 prev[1] = max(prev[1],currend);
+                 i++;
+            }   
         }
-        ans.push_back(temp);
-        return ans;
+        store.push_back(prev);
+        return store;
+  
+        
+
     }
 };
