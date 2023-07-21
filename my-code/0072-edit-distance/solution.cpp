@@ -1,54 +1,27 @@
-//Define 2D dp without size:
-struct PairHash {
-    template <typename T1, typename T2>
-    size_t operator()(const pair<T1, T2> &p)
-    const {
-        auto h1 = hash<T1>{}(p.first);
-        auto h2 = hash<T2>{}(p.second);
-        return h1 ^ h2;
-    }
-};
- 
-
 class Solution {
 public:
-//All are same:
-//72. Edit Distance
-//712. Minimum ASCII Delete Sum for Two Strings
-//583. Delete Operation for Two Strings   
+    int dp[501][501];
+    int solve(int idx1,int idx2,string &word1,string word2){
+      if(idx2>=word2.size()) return word1.size()-idx1;
+      if(idx1>=word1.size()) return word2.size()-idx2;
+       
+       if(dp[idx1][idx2]!=-1) return dp[idx1][idx2];
 
-   // unordered_map<pair<int,int>,int,PairHash> dp; //C++ does not have a pair has so make's it template:
-    //using #include <utility>
-    int solve(const std::string& word1, const std::string& word2, int idx1, int idx2,unordered_map<pair<int,int>,int,PairHash> &dp) {
-        if (idx1 >= word1.size()) {
-            // Get the rest of word2
-            return word2.size() - idx2;
-        }
-        if (idx2 >= word2.size()) {
-            return word1.size() - idx1;
+       if(word1[idx1]==word2[idx2]){
+            return solve(idx1+1,idx2+1,word1,word2);
         }
 
-        if (dp.find({ idx1, idx2 }) != dp.end()) {
-            return dp[{ idx1, idx2 }];
-        }
+      int op1=0,op2=0,op3=0;
+      op1=solve(idx1+1,idx2,word1,word2);
+      op2=solve(idx1,idx2+1,word1,word2);
+      op3=solve(idx1+1,idx2+1,word1,word2);
 
-        if (word1[idx1] == word2[idx2]) {
-            return dp[{ idx1, idx2 }] = solve(word1, word2, idx1 + 1, idx2 + 1,dp);
-        }
+      return dp[idx1][idx2] = min({op1,op2,op3})+1;
 
-        int op1 = solve(word1, word2, idx1 + 1, idx2 + 1,dp); // Replace
-        int op2 = solve(word1, word2, idx1 + 1, idx2,dp);     // Delete
-        int op3 = solve(word1, word2, idx1, idx2 + 1,dp);     // Insert (or delete from word2)
-
-        return dp[{ idx1, idx2 }] = std::min({ op1, op2, op3 }) + 1;
     }
 
-   
-
     int minDistance(string word1, string word2) {
-        //two approach:
-      //  vector<vector<int>> dp(501,vector<int>(501,-1));
-      unordered_map<pair<int,int>,int,PairHash> dp;
-        return solve(word1,word2,0,0,dp);
+        memset(dp,-1,sizeof(dp));
+       return solve(0,0,word1,word2);
     }
 };
