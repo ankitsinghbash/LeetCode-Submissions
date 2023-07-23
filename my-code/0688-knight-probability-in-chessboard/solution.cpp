@@ -1,28 +1,30 @@
 class Solution {
 public:
-    unordered_map<string,double> mp;
-    int dir[8][8] = {{-2,-1},{-1,-2},{1,-2},{2,-1},{2,1},{1,2},{-1,2},{-2,1}};
+   vector<pair<int, int>> dir = {{-2, -1}, {-2, 1}, {-1, 2}, {1, 2}, {2, 1}, {2, -1}, {1, -2}, {-1, -2}};
+   double solve(int row,int col,int k,int n,vector<vector<vector<double>>> &dp){
+     if(row<0 || col<0 || row>=n || col>=n){
+         return 0;
+     }
 
-    double knightProbability(int n, int k, int row, int column) {
-        return find(n,k,row,column);
+     if(dp[row][col][k]!=-1){
+         return dp[row][col][k];
+     }
+
+     if(k==0){
+         return 1;
+     }
+
+    double ans = 0.0;
+    for(int i=0;i<dir.size();i++){
+        int x = row+dir[i].first;
+        int y = col+dir[i].second;
+        ans+=solve(x,y,k-1,n,dp)/8.0;
     }
-
-    double find(int n, int moves, int r, int c) {
-        if(r<0 || r>=n || c<0 || c>=n)
-            return 0;
-        
-        if(moves == 0)
-            return 1;
-        
-        string key = to_string(r) + "aryan" + to_string(c) + "mittal" + to_string(moves);
-        if(mp.find(key) != mp.end())
-            return mp[key];
-        
-        double probability = 0;
-        for(int i=0; i<8; i++)
-            probability += find(n,moves-1, r+dir[i][0], c+dir[i][1])/8.0 ;
-        
-        mp[key] = probability;
-        return mp[key];
+    //  double ans = solve(row-2,col-1,k-1,n,dp)/8.0+solve(row-2,col+1,k-1,n,dp)/8.0+solve(row-1,col+2,k-1,n,dp)/8.0+solve(row+1,col+2,k-1,n,dp)/8.0+solve(row+2,col+1,k-1,n,dp)/8.0+solve(row+2,col-1,k-1,n,dp)/8.0+solve(row+1,col-2,k-1,n,dp)/8.0+solve(row-1,col-2,k-1,n,dp)/8.0;
+    return  dp[row][col][k] = ans;
+   }
+    double knightProbability(int n, int k, int row, int column) {
+        vector<vector<vector<double>>> dp(n,vector<vector<double>>(n,vector<double>(k+1,-1.0)));
+        return solve(row,column,k,n,dp);
     }
 };
