@@ -1,22 +1,29 @@
 class Solution {
 public:
-    vector<vector<int>> combine(int n, int k) {
-        vector<vector<int>> result;
-        vector<int> combination;
-        backtrack(n, k, 1, combination, result);
-        return result;
+    vector<vector<int>> ans;
+    void solve(int idx,int n,int k,vector<int> &sm){
+
+
+      if(sm.size()==k){
+          ans.push_back(sm);
+          return;
+      }
+
+   
+       for(int i=idx;i<=n;i++){
+           sm.push_back(i);
+           solve(i+1,n,k,sm);
+           sm.pop_back();
+       }
+        
+
+
     }
 
-private:
-    void backtrack(int n, int k, int start, vector<int>& combination, vector<vector<int>>& result) {
-        if (combination.size() == k) {
-            result.push_back(combination);
-            return;
-        }
-        for (int i = start; i <= n; i++) {
-            combination.push_back(i);
-            backtrack(n, k, i + 1, combination, result);
-            combination.pop_back();
-        }
+
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> sm;
+        solve(1,n,k,sm);
+        return ans;
     }
 };
