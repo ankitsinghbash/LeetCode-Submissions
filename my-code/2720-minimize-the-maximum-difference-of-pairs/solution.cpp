@@ -1,33 +1,41 @@
 class Solution {
 public:
-    int minimizeMax(std::vector<int>& nums, int p) {
-        std::sort(nums.begin(), nums.end());
-        
-        int left = 0, right = nums.back() - nums.front();
-        
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (can_form_pairs(nums, mid, p)) {
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-        
-        return left;
+
+    int Iscnt(int mid,vector<int> &nums){
+         int i=0;
+         int n = nums.size();
+         int pair=0;
+         while(i<n){
+             if(i+1<n && nums[i+1]-nums[i]<=mid){
+                 pair++;
+                 i+=2;
+             }
+             else{
+                 i++;
+             }
+         }
+         return pair;
     }
-    
-private:
-    bool can_form_pairs(const std::vector<int>& nums, int mid, int p) {
-        int count = 0;
-        for (int i = 0; i < nums.size() - 1 && count < p;) {
-            if (nums[i+1] - nums[i] <= mid) {
-                count++;
-                i += 2;
-            } else {
-                i++;
+
+
+    int minimizeMax(vector<int>& nums, int p) {
+        int n = nums.size();
+        sort(nums.begin(),nums.end());
+        int low=0;
+        int result = INT_MAX;
+        int high = nums[n-1]-nums[0];
+        while(low<=high){
+            int mid = low+(high-low)/2;
+            if(Iscnt(mid,nums)>=p){
+                result = mid;
+                high=mid-1;
+            }
+            else{
+                low = mid+1;
             }
         }
-        return count >= p;
+        return result;
+
+
     }
 };
