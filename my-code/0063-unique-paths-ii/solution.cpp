@@ -1,5 +1,6 @@
 class Solution {
 public:
+   
    int solve(int i,int j,int n,int m,vector<vector<int>> &obstacleGrid,vector<vector<int>> &dp){
 
      if(i<0 || j<0 || i>=n || j>=m){
