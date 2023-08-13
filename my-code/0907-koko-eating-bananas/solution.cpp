@@ -1,34 +1,33 @@
 class Solution {
 public:
-
-   long long  find_banana(int mid,vector<int> &piles){
-        long long ans=0;
-        for(int i=0;i<piles.size();++i){
+   long long  Hours(int mid,vector<int> &piles){
+       long long total=0;
+       int n = piles.size();
+       for(int i=0;i<piles.size();++i){
              int val = piles[i]/mid;
-             ans+=val;
+             total+=val;
              if(piles[i]%mid!=0){
-                 ans+=1;
+                 total+=1;
              }
         }
-       return ans;
+       return total;
    }
-   
-
+  
 
     int minEatingSpeed(vector<int>& piles, int h) {
         int low=1;
         int high = *max_element(piles.begin(),piles.end());
-
-     //   int result=-1;
-        while(low<=high){
-            int mid = low+(high - low)/2;
-            if(find_banana(mid,piles)<=h){
-                 high = mid-1;
+        int result = 1;
+        while(low<high){
+            int mid = low+(high-low)/2;
+            if(Hours(mid,piles)<=h){
+                high = mid;
             }
             else{
-                 low = mid+1;
+                low = mid+1;
+                result = low;
             }
         }
-        return low;
+        return  result;
     }
 };
