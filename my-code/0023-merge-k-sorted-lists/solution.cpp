@@ -1,55 +1,57 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    vector<int> ans;
-
- 
-   ListNode *addlast(ListNode *&head,int data){
-       ListNode *new_node = new ListNode;
-       new_node->val=data;
-       new_node->next=NULL;
+   void solve(ListNode *&head, int data){
        if(head==NULL){
-           head=new_node;
+           ListNode *new_node = new ListNode(data);
+           head = new_node;
+           return;
        }
-       else{
-           ListNode *temp = head;
-           while(temp->next!=NULL){
-               temp=temp->next;
-           }
-           temp->next=new_node;
+    
+       //Insert first postion case:
+      
+       ListNode *temp1 = head;
+       if(data<temp1->val){
+           ListNode *new_node = new ListNode(data);
+           new_node->next = temp1;
+           head = new_node;
+           return;
        }
-       return head;
+
+
+       
+       ListNode *temp = head;
+       ListNode *prev = NULL;
+       while(temp!=NULL){
+              if(data<temp->val){
+                  ListNode *new_node = new ListNode(data);
+                  ListNode *delta = new_node;
+                  prev->next = NULL;
+                  prev->next = delta;
+                  new_node->next = temp;
+                  return;
+              }
+              prev = temp;
+              temp=temp->next;
+       }
+
+       ListNode *new_node = new ListNode(data);
+       prev->next = new_node;
+
    }
 
-    
-    ListNode *solve(vector<int> &ans){
-        ListNode *head=NULL;
-        for(int i=0;i<ans.size();i++){
-            addlast(head,ans[i]);
-        }
-        return head;
-    }
 
 
 
     ListNode* mergeKLists(vector<ListNode*>& lists) {
-         for(auto &x : lists){
-             ListNode *curr = x ;
-             while(curr!=NULL){
-                 ans.push_back(curr->val);
-                 curr=curr->next;
-             }
-         }
-         sort(ans.begin(),ans.end());
-         return solve(ans);
+        ListNode *head = NULL;
+        for(int i=0;i<lists.size();i++){
+            ListNode *head1 = lists[i];
+            ListNode *temp = head1;
+            while(temp!=NULL){
+                solve(head,temp->val);
+                temp = temp->next;
+            }
+        }
+        return head;
     }
 };
