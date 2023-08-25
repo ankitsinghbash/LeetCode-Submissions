@@ -1,34 +1,42 @@
 class Solution {
 public:
     string reorganizeString(string s) {
-        unordered_map<char, int> freq_map;
-        for (char c : s) {
-            freq_map[c]++;
+        int n = s.size();
+        unordered_map<char, int> mp;
+        for (char x : s) {
+            mp[x]++;
         }
 
-        priority_queue<pair<int, char>> max_heap;
-        for (auto &[ch, freq] : freq_map) {
-            max_heap.push({freq, ch});
+        priority_queue<pair<int, char>> pq;
+        for (auto it = mp.begin(); it != mp.end(); it++) {
+            if (it->second > (n + 1) / 2) {
+                return "";
+            }
+            pq.push({it->second, it->first});
         }
 
-        string res;
-        while (max_heap.size() >= 2) {
-            auto [freq1, char1] = max_heap.top(); max_heap.pop();
-            auto [freq2, char2] = max_heap.top(); max_heap.pop();
-
-            res += char1;
-            res += char2;
-
-            if (--freq1 > 0) max_heap.push({freq1, char1});
-            if (--freq2 > 0) max_heap.push({freq2, char2});
+        string ans = "";
+        while (pq.size() >= 2) {
+            pair<int, char> P1 = pq.top();
+            pq.pop();
+            pair<int, char> P2 = pq.top();
+            pq.pop();
+            ans += P1.second;
+            ans += P2.second;
+            P1.first--;
+            P2.first--;
+            if (P1.first > 0) {
+                pq.push(P1);
+            }
+            if (P2.first > 0) {
+                pq.push(P2);
+            }
         }
 
-        if (!max_heap.empty()) {
-            auto [freq, ch] = max_heap.top();
-            if (freq > 1) return "";
-            res += ch;
+        if (!pq.empty()) {
+            ans += pq.top().second;
         }
-
-        return res;
+        return ans;
     }
 };
+
