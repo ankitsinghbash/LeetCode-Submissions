@@ -1,35 +1,26 @@
 class Solution {
 public:
-
-   bool solve(vector<int> &stones,int idx,int prev,int n,vector<vector<int>> &dp){
-
-      if(idx == n-1) return true;
-      if(idx >= n) return false;
-
-      if(dp[idx][prev]!=-1) return dp[idx][prev];
-
-      int prev_jump = stones[idx]-stones[prev];
-      for(int i=idx+1;i<n;i++){
-          int currjump = stones[i]-stones[idx];
-          if(prev_jump-1==currjump||prev_jump==currjump||prev_jump+1==currjump){
-              if(solve(stones,i,idx,n,dp)){
-                  return dp[idx][prev]=true;
-              }
-          }
-      }
-
-      return dp[idx][prev]=false;
-
-   }
-
     bool canCross(vector<int>& stones) {
-        if(stones[1]!=1) return false;
-
-        int n = stones.size();
-        int current = 1;
-        int prev = 0;
-        vector<vector<int>> dp(n,vector<int>(n,-1));  //change value are current and prev;
-        return solve(stones,current,prev,n,dp);
-
+         int n = stones.size();
+         if(stones[1]!=1) return false;
+        vector<vector<bool>> dp(n,vector<bool>(n,false));
+        dp[0][0] = true;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<i;j++){
+                int diff = stones[i] - stones[j];
+                 if(diff>=n){ //diff is size n as dp initialze:
+                     continue;
+                 }
+                if(dp[j][diff] or (diff-1>=0 and dp[j][diff-1]) or (diff+1<n and dp[j][diff+1])){
+                    dp[i][diff] = true;
+                }
+            }
+        }
+        for(int j=0;j<n;j++){
+            if(dp[n-1][j]){
+                return true;
+            }
+        }
+        return false;
     }
 };
