@@ -2,75 +2,28 @@ class Solution {
 public:
     vector<int> findAnagrams(string s, string p) {
         vector<int> ans;
-        int p_size = p.size();
-        int s_size = s.size();
-        if(p_size>s_size){
+        if(p.size()>s.size()){
             return ans;
         }
-        vector<int> freq_p(26,0);
-        vector<int> s_window(26,0);
+        vector<int> window_p(26,0);
+        vector<int> window_s(26,0);
         for(int i=0;i<p.size();i++){
-            freq_p[p[i]-'a']++;
-            s_window[s[i]-'a']++;
+            window_p[p[i]-'a']++;
+            window_s[s[i]-'a']++;
         }
-        if(freq_p==s_window){
-           ans.push_back(0);
+        if(window_p==window_s){
+            ans.push_back(0);
         }
 
-        for(int i=p_size;i<s.size();i++){
-            s_window[s[i-p_size]-'a']--;
-            s_window[s[i]-'a']++;
-            if(s_window==freq_p){
-                ans.push_back(i-p_size+1);
-            }
-        }
-        return ans;
+       
+       int x = p.size();
+       for(int i=p.size();i<s.size();i++){
+           window_s[s[i-x]-'a']--;
+           window_s[s[i]-'a']++;
+           if(window_s==window_p){
+               ans.push_back(i-x+1);
+           }
+       }
+       return ans;  
     }
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-class Solution {
-public:
-vector<int> findAnagrams(string s, string p) {
-     int s_len = s.length(); 
-     int p_len = p.length(); 
-     if(s.size() < p.size())
-      return {};
-
-      
-       vector<int> freq_p(26,0); 
-       vector<int> window(26,0); 
-       //first window 
-       for(int i=0;i<p_len;i++){
-            freq_p[p[i]-'a']++; 
-            window[s[i]-'a']++; 
-            } 
-      vector<int> ans;
-       if(freq_p == window) 
-       ans.push_back(0);
-     for(int i=p_len;i<s_len;i++){
-          window[s[i-p_len] - 'a']--;
-           window[s[i] - 'a']++;
-         if(freq_p == window)
-          ans.push_back(i-p_len+1);
-           } 
-           return ans; 
-        }
-};
-*/
