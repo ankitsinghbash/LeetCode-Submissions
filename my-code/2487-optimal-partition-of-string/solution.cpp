@@ -1,21 +1,23 @@
 class Solution {
 public:
     int partitionString(string s) {
-         map<char,int> mp;
-        int cnt = 0;
+        //play optimally:
+        int cnt=0;
+        unordered_set<char> st;
         for(int i=0;i<s.size();i++){
-               char ch = s.at(i);
-               auto it = mp.find(ch);
-               if(it==mp.end()){
-                   mp[ch]++;
-               }
-               else{
-                   cnt++;
-                   mp.clear();
-                   mp[ch]++;
-               }
+            char ch = s.at(i);
+            if(st.find(ch)==st.end()){
+                st.insert(ch);
+            }
+            else{
+                //present in set:
+                st.clear();
+                cnt++;
+                st.insert(ch);
+            }
         }
         cnt++;
         return cnt;
+
     }
 };
