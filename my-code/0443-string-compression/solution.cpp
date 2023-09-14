@@ -1,30 +1,41 @@
 class Solution {
 public:
     int compress(vector<char>& chars) {
-        int i=0;
-        int n=chars.size();
-        vector<char> ans;
-        while(i<n){
-            char ch = chars[i];
-            int cnt=0;
-            while(i<n && ch==chars[i]){
-                i++;
-                cnt++;
-            }
-        
-         ans.push_back(ch);
-         if(cnt>1){
-           string str = to_string(cnt);
-           for(auto &x : str){
-               ans.push_back(x);
-           }
-         }      
+        //Just write algo according to given condition:
+         string s="";
+         int cnt=1;
+         for(int i=1;i<chars.size();i++){
+           if(chars[i]==chars[i-1]){
+               cnt++;
 
-        }
-        chars.clear();
-        for(auto &x : ans){
-            chars.push_back(x);
-        }
-        return ans.size();
+           }
+           else{
+               s+=chars[i-1];
+               if(cnt>1){
+               string str = to_string(cnt);
+               cout<<str<<endl;
+                 s+=str;
+               }
+               cnt=1;
+           }
+         }
+         s+=chars[chars.size()-1];
+         if(cnt>1){
+             string str = to_string(cnt);
+             cout<<str<<endl;
+             s+=str;
+         }
+
+         //NOW REPLACE KARNE KO BOLA HAI QUESTION ME:
+         vector<char> delta;
+         for(char ch : s){
+             delta.push_back(ch);
+         }
+         chars = delta;
+         delta.clear();
+ 
+
+
+         return s.size();
     }
 };
