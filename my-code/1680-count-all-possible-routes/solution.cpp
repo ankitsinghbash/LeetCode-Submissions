@@ -1,35 +1,41 @@
 class Solution {
 public:
-   const int mod = 1e9+7;
-   int solve(vector<int> &locations,int start,int finish,int fuel,vector<vector<int>> &dp){
-       
-       if(fuel<0) return 0;
+   int dp[101][201];
+   
+   int dfs(int start, int finish, int fuel, vector<int> &locations, unordered_map<int, vector<int>> &adj) {
+     if (fuel < 0) {
+         return 0;
+     }
+  
+     int cnt = 0;
+     if (start == finish) {
+         cnt++;
+     }
 
-    
-       if(dp[start][fuel]!=-1){
-           return dp[start][fuel];
-       }
+     if (dp[start][fuel] != -1) {
+         return dp[start][fuel];
+     }
 
-
-       int ans=0;
-       if(start==finish){
-           ans++;
-       }
-
-       for(int idx=0;idx<locations.size();idx++){
-           if(idx!=start){
-                ans=(ans%mod+solve(locations,idx,finish,fuel-abs(locations[start]-locations[idx]),dp)%mod)%mod;
-           }
-       }
-     return  dp[start][fuel] =  (ans%mod);     
+     for (auto next : adj[start]) {
+         int less_fuel = abs(locations[start] - locations[next]);
+         cnt += dfs(next, finish, fuel - less_fuel, locations, adj);
+         cnt %= 1000000007;  // Apply modulo to prevent overflow.
+     }
+     return dp[start][fuel] = cnt;
    }
 
+    int countRoutes(vector<int>& locations, int start, int finish, int fuel) {
+        unordered_map<int, vector<int>> adj;
+        for (int i = 0; i < locations.size(); i++) {
+            for (int j = 0; j < locations.size(); j++) {
+                if (i != j) {
+                    adj[i].push_back(j);
+                }
+            }
+        }
 
-
-
-
-    int countRoutes(vector<int>& locations, int start, int finish, int fuel){
-        vector<vector<int>> dp(locations.size(),vector<int>(fuel+1,-1));
-        return solve(locations,start,finish,fuel,dp);
+        memset(dp, -1, sizeof(dp)); // Initialize dp array with -1 using memset.
+        return dfs(start, finish, fuel, locations, adj);
     }
 };
+
