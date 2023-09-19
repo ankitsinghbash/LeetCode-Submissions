@@ -22,19 +22,19 @@ public:
         int n = nums.size();
         sort(nums.begin(),nums.end());
         int low=0;
-        int result = INT_MAX;
+      //  int result = INT_MAX;
         int high = nums[n-1]-nums[0];
         while(low<=high){
             int mid = low+(high-low)/2;
             if(Iscnt(mid,nums)>=p){
-                result = mid;
+              //  result = mid;
                 high=mid-1;
             }
             else{
                 low = mid+1;
             }
         }
-        return result;
+        return low;
 
 
     }
