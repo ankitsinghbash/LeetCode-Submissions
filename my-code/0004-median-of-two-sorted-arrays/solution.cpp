@@ -1,44 +1,45 @@
 class Solution {
 public:
     double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
-        vector<int> store;
+        int n = nums1.size();
+        int m = nums2.size();
+        vector<int> result(n+m,0);
         int i=0;
         int j=0;
-        while(i<nums1.size() && j<nums2.size()){
+        int k=0;
+        while(i<n && j<m){
             if(nums1[i]<=nums2[j]){
-                store.push_back(nums1[i]);
+                result[k]=nums1[i];
+                k++;
                 i++;
             }
-            else if(nums1[i]>nums2[j]){
-                store.push_back(nums2[j]);
+            else{
+                result[k]=nums2[j];
                 j++;
+                k++;
             }
         }
 
-        while(i<nums1.size()){
-            store.push_back(nums1[i]);
+        while(i<n){
+            result[k]=nums1[i];
+            k++;
             i++;
         }
-
-        while(j<nums2.size()){
-            store.push_back(nums2[j]);
+        while(j<m){
+            result[k]=nums2[j];
             j++;
+            k++;
         }
 
-        int size = store.size();
-        int low  = 0;
-        int high = store.size()-1;
-        if(size%2==0){
-            int mid = low+(high-low)/2;
-            double total = store[mid]+store[mid+1];
-            double ans = total/2;
-            return ans;
+        if((n+m)%2!=0){
+              int idx = (n+m)/2;
+              return (double)result[idx];
         }
-        else{
-            int mid = low+(high-low)/2;
-            double total = store[mid];
-            double ans = total/1.0;
-            return ans;
-        }
+
+        //odd:
+        int idx1 = (n+m)/2;
+        int idx2 = idx1-1;
+        double data = (double)(result[idx1]+result[idx2])/2;
+        return data;
     }
 };
