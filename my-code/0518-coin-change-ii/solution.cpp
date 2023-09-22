@@ -1,35 +1,66 @@
 class Solution {
 public:
+    int dp[301][5001];
+    int solve(int i,int amount,vector<int> &coins){
+        if(i>=coins.size()) return 0;
+
+        if(amount==0){
+            return 1;
+        }
+
+        if(amount<0){
+            return 0;
+        }
+
+        if(dp[i][amount]!=-1){
+            return dp[i][amount];
+        }
+
+        int pick = solve(i,amount-coins[i],coins);
+        int notpick = solve(i+1,amount,coins);
+
+        return dp[i][amount] = pick+notpick;
+
+    
+    }
+
     int change(int amount, vector<int>& coins) {
-        int n = coins.size();
-        int dp[n+1][amount+1];
-        //fix karo 1st col:
-        for(int i=0;i<n+1;i++)
-        {
-            dp[i][0]=1;
-        }
-
-        //fix 1st row:
-        for(int j=1;j<amount+1;j++)
-        {
-            dp[0][j]=0;
-        }
-
-       for(int i=1;i<n+1;i++)
-       {
-           for(int j=1;j<amount+1;j++)
-           {
-               if(j>=coins[i-1])  //amount greater then or equal coin size:
-               {
-                    dp[i][j]=dp[i][j-coins[i-1]]+dp[i-1][j];  //prev case + above case:
-               }
-               else
-               {
-                   //amount is lesser then coin size: //when amount hi kaam ho then copy above case of table:
-                   dp[i][j]=dp[i-1][j];
-               }
-           }
-       }
-       return dp[n][amount];
+        memset(dp,-1,sizeof(dp));
+        return solve(0,amount,coins);
     }
 };
+
+// class Solution {
+// public:
+//     //this also count the duplicate:
+//             //1+2+2 ==1 and 2+2+1 ==1 they count there are two diff but we required unique possible://means in this we go backward of array:
+//             //and i case of taken or not taken we always go in the forward direction of array:
+//     int solve(int amount, vector<int>& coins, vector<vector<int>>& dp) {
+//         if (amount == 0) {
+//             return 1;
+//         }
+        
+//         if (amount < 0) {
+//             return 0;
+//         }
+
+//         if (dp[amount][coins.size()] != -1) {
+//             return dp[amount][coins.size()];
+//         }
+
+//         int cnt = 0;
+//         for (int i = 0; i < coins.size(); i++) {
+//             int rest = solve(amount - coins[i], coins, dp); 
+//             cnt += rest;
+//         }
+
+//         dp[amount][coins.size()] = cnt;
+//         return cnt;
+//     }
+
+//     int change(int amount, vector<int>& coins) {
+//        // vector<vector<int>> dp(amount + 1, vector<int>(coins.size() + 1, -1));
+//         return solve(amount, coins, dp);
+//     }
+// };
+
