@@ -1,36 +1,33 @@
 class Solution {
 public:
-   int const MOD = 1e9+7;
-   int solve(int i,int n,int &k,int target,vector<vector<int>> &dp){
-     if(i==0){
-         if(target==0){
-             return 1;
-         }
-         else{
-             return 0;
-         }
-     }
-     if(target<0){
-         return 0;
-     }
+   const long long mod = 1e9+7;
+   int solve(int n,int range,int target,vector<vector<int>> &dp){
+      if(target<0 || n<0 ){
+          return 0;
+      }
 
-     if(dp[i][target]!=-1){
-         return dp[i][target];
-     }
-   
-
-       long long ans=0;
-       for(int j=1;j<=k;j++){
-               ans=(ans+solve(i-1,n,k,target-j,dp))%MOD;
-       }
-      return dp[i][target] =  ans%MOD;
-   }
-   
+      if(n==0 && target==0){
+          return 1;
+      }
     
- 
+      if(dp[n][target]!=-1){
+          return dp[n][target];
+      }
+
+
+      long long cnt=0;
+      for(int i=1;i<=range;i++){
+          cnt+=solve(n-1,range,target-i,dp)%mod;
+      }
+
+
+     return dp[n][target] = cnt%mod;
+
+   }
+
+
     int numRollsToTarget(int n, int k, int target) {
-        int i=n;
         vector<vector<int>> dp(n+1,vector<int>(target+1,-1));
-        return solve(i,n,k,target,dp);
+        return solve(n,k,target,dp);
     }
 };
