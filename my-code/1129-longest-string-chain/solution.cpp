@@ -1,56 +1,64 @@
 class Solution {
 public:
-   bool isValid(string &A,string &B){
-    if(A.size()>=B.size()) return false;  //Not imp condition cover by:
-    if(A.size()+1!=B.size()) return false;   //this line:
+  int dp[1001][1001];
+  bool ispossible(string &word2,string &word1){
+      if(word1.size()>=word2.size()) return false;
+      if(word1.size()+1!=word2.size()) return false;
 
-    int i=0;
-    int j=0;
-    while(j<B.size() && i<A.size()){
-        if(A.at(i)==B.at(j)){
-            i++;
-            j++;
-        }
-        else{
-            j++;
-        }
-    }
-    
-    while(j<B.size()){   //pcxbc && pcxbcf taken and try Run:
-       j++;
-    }
-
-    if(i==A.size() && j==B.size()){
-        return true;
-    }
-    return false;
-   }
-
-
-    
-
-   int solve(int prev,int idx,vector<string> &words,vector<vector<int>> &dp){
-      if(idx>words.size()) return 0;
-
-      if(dp[idx][prev]!=-1) return dp[idx][prev];
-
-      int pick = 0;
-      int notpick = 0;
-      notpick = solve(prev,idx+1,words,dp);
-      if(prev==0 || isValid(words[prev-1],words[idx-1])){
-          pick =  1+solve(idx,idx+1,words,dp);
+  
+      int i=0;
+      int j=0;
+      int cnt=0;
+      while(i<word1.size() && j<word2.size()){
+          if(word1[i]==word2[j]){
+              i++;
+              j++;
+          }
+          else{
+              j++;
+              cnt++;
+          }
       }
-     return dp[idx][prev] =  max(pick,notpick);
-   }
- 
-   static bool cmp(string a,string b){
-       return b.size()>a.size();
-   }
 
+      while(j<word2.size()){
+          j++;
+          cnt++;
+      }
+      return cnt==1 ? true : false;
+
+  }
+
+  
+
+   struct cmp{
+       bool operator()(string &a,string &b){
+           return a.size()<b.size();
+       }
+   };
+
+    int solve(int idx,int prev,vector<string> &words){
+        if(idx>words.size()){
+            return 0;
+        }
+  
+        if(dp[idx][prev]!=-1){
+            return dp[idx][prev];
+        }
+
+        int notpick=0;
+        int pick=0;
+        notpick = solve(idx+1,prev,words);
+        if(prev==0 || ispossible(words[idx-1],words[prev-1])){
+            pick = 1+solve(idx+1,idx,words);
+        }
+
+        return dp[idx][prev] = max(pick,notpick);
+
+    }
 
     int longestStrChain(vector<string>& words) {
-        vector<vector<int>> dp(words.size()+1,vector<int>(words.size()+1,-1));
-        sort(words.begin(),words.end(),cmp); //sorting becuase we required first size smaller then next in isValid function:
-        return solve(0,1,words,dp);
+        sort(words.begin(),words.end(),cmp());
+        memset(dp,-1,sizeof(dp));
+        return solve(1,0,words);
     }
 };
