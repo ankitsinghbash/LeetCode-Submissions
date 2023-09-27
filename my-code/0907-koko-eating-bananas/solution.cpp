@@ -1,33 +1,33 @@
 class Solution {
 public:
-   long long  Hours(int mid,vector<int> &piles){
-       long long total=0;
-       int n = piles.size();
-       for(int i=0;i<piles.size();++i){
-             int val = piles[i]/mid;
-             total+=val;
-             if(piles[i]%mid!=0){
-                 total+=1;
-             }
-        }
-       return total;
+   typedef long long ll;
+   ll solve(int k,vector<int> &piles){
+       ll hour=0;
+       for(int i=0;i<piles.size();i++){
+           int val = piles[i];
+           if(val%k==0 && k!=0){
+               hour+=val/k;
+           }
+           else{
+               hour+=val/k+1;
+           }
+       }
+       return hour;
    }
-  
+
 
     int minEatingSpeed(vector<int>& piles, int h) {
         int low=1;
         int high = *max_element(piles.begin(),piles.end());
-        int result = 1;
-        while(low<high){
-            int mid = low+(high-low)/2;
-            if(Hours(mid,piles)<=h){
-                high = mid;
+        while(low<=high){
+            int k= low+(high-low)/2;
+            if(solve(k,piles)<=h){
+                 high = k-1;
             }
             else{
-                low = mid+1;
-                result = low;
+                low = k+1;
             }
         }
-        return  result;
+        return low;
     }
 };
