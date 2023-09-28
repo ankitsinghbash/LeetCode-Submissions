@@ -1,90 +1,52 @@
 class Solution {
 public:
-    //best solution:
-    int solve(vector<int> &arr,int cap){
-        int sum=0;
-        int  cnt=0;
-        for(auto &x : arr){
-            if(x>cap){
-                return INT_MAX;
-            }
-            if(sum<=cap){
-                sum+=x;
-            }
-            if(sum>cap){
-                sum=0;
-                sum=x;
-                cnt++;
-            }
-        }
-        if(sum<=cap){
-            cnt++;
-        }
-        return cnt;
+   
+    int solve(int cap,vector<int> &weights){
+
+       int curr=0;
+       int cnt=0;
+       for(int i=0;i<weights.size();i++){
+           int val =  weights[i];
+           if(val>cap){
+               return INT_MAX;
+           }
+           curr+=val;
+           if(curr==cap){
+               cnt++;
+               curr=0;
+           }
+           if(curr>cap){
+               cnt++;
+               curr=val;
+           }
+       }
+       if(curr!=0){
+           if(curr<=cap){
+               cnt++;
+           }
+       }
+       return cnt;
+
+
+
     }
   
 
-    int shipWithinDays(vector<int>& arr, int D) {
-        int low=1;
-        int high=INT_MAX;
-        while(low<=high){
-            int mid = low+(high-low)/2;
-            int day = solve(arr,mid);
-            if(day<=D){
-                high=mid-1;
-            }
-            else{
-                low=mid+1;
-            }
-        }
-        return low;
+
+    int shipWithinDays(vector<int>& weights, int days) {
+        int low = *min_element(weights.begin(),weights.end());
+        int high = accumulate(weights.begin(),weights.end(),0);
+ 
+       while(low<=high){
+           int cap = low+(high-low)/2;
+           if(solve(cap,weights)<=days){
+               high=cap-1;
+           }
+           else{
+               low = cap+1;
+           }
+       }
+       return low;
+
     }
 };
-
-
-
-
-
-
-
-// class Solution {
-   
-//      public static int solve(int cap,int arr[])
-//     {
-//         int count=1;
-//         int sum=0;
-//         for(int a:arr)
-//         {
-//             if(a>cap)
-//             return Integer.MAX_VALUE;
-            
-//             if(sum+a<=cap)
-//             {
-//                 sum+=a;
-//             }
-//             else
-//             {
-//                 count++;
-//                 sum=a;
-//             }
-//         }
-//         return count;
-//     }
-
-
-//     public int shipWithinDays(int[] arr, int D) {
-         
-//         int start=1, end=(int)1e9;
-//         while(start<end)
-//         {
-//             int mid=start+(end-start)/2;
-//             int days=solve(mid,arr);
-//             if(days<=D)
-//             end=mid;
-//             else
-//             start=mid+1;
-//         }
-//         return start;
-
-//     }
-// }
