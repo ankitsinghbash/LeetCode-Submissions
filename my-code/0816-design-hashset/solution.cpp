@@ -1,32 +1,32 @@
 class MyHashSet {
 public:
+    vector<vector<int>> v;
     int M;
-    vector<list<int>> hashing;
     MyHashSet() {
-        M = 10001; //let M=15000
-        hashing = vector<list<int>>(M,list<int>{});  //given the size of list taken 10001*10001 matrix size around but give an empty linkedlist{} is most prefiable as give the linked list size:
+         M=10001;
+         v = vector<vector<int>>(M,vector<int>{});
     }
     
     void add(int key) {
-        int index = key%M;
-        auto itr = find(hashing[index].begin(),hashing[index].end(),key);
-        if(itr==hashing[index].end()){
-        hashing[index].push_back(key);
+        int idx = key%M;
+        auto it = find(v[idx].begin(),v[idx].end(),key);
+        if(it==v[idx].end()){
+            v[idx].push_back(key);
         }
     }
     
     void remove(int key) {
-        int index = key%M;
-        auto itr = find(hashing[index].begin(),hashing[index].end(),key);
-        if(itr!=hashing[index].end()){
-            hashing[index].erase(itr);
+        int idx = key%M;
+        auto it = find(v[idx].begin(),v[idx].end(),key);
+        if(it!=v[idx].end()){
+            v[idx].erase(it);
         }
     }
     
     bool contains(int key) {
-        int index = key%M;
-        auto itr = find(hashing[index].begin(),hashing[index].end(),key);
-        if(itr!=hashing[index].end()){
+         int idx = key%M;
+        auto it = find(v[idx].begin(),v[idx].end(),key);
+        if(it!=v[idx].end()){
             return true;
         }
         return false;
