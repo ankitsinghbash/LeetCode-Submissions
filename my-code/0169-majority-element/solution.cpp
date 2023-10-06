@@ -1,37 +1,20 @@
 class Solution {
 public:
     int majorityElement(vector<int>& nums) {
-          unordered_map<int,int > mp;
-    int n=nums.size();
-    for(int i=0;i<n;i++)
-    {
-        mp[nums[i]]++;
-    }
-    
-    
-    //after puting the value int map:
-    int mini=INT_MIN;
-    unordered_map<int,int> :: iterator it;
-    for(it=mp.begin();it!=mp.end();it++)
-    {
-        if((*it).second>mini)
-        {
-            mini=(*it).second;
+        int major =nums[0];
+        int cnt=1;
+        for(int i=1;i<nums.size();i++){
+            if(cnt==0){
+                major = nums[i];
+                cnt=1;
+            }
+            else if(major==nums[i]){
+                cnt++;
+            }
+            else{
+                cnt--;
+            }
         }
+        return major;
     }
-    
-    //mini is the max value;
-    for(it=mp.begin();it!=mp.end();it++)
-    {
-        if((*it).second==mini)
-        {
-           int ans=(*it).first;
-            return ans;
-        }
-    }
-        
-        
-        return -1;
-    }
-   
 };
