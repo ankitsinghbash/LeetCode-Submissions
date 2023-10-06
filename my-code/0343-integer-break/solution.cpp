@@ -1,41 +1,35 @@
 class Solution {
 public:
-  
-    int solve(int n,int val,int sum){
+    long long solve(int n,vector<int> &dp){
 
-    if(n==sum){
-        return 1;
-    }
-    if(sum>n || val==n){
-        return 0;
-    }
+        if(n==0){
+            return 1;
+        }
  
-     
-     int  pick = val*solve(n,val,sum+val);
-    int  notpick = 1*solve(n,val+1,sum);
+        if(n<0){
+            return 0;
+        }
 
-     return max(pick,notpick);
+        if(dp[n]!=-1){
+            return dp[n];
+        }
 
+  
+        long long maxx=INT_MIN;
+        for(long long i=1;i<=n;i++){
+            long long prd = i*solve(n-i,dp);
+            maxx = max(maxx,prd);
+        }
+        return dp[n] = maxx;
 
     }
-   
-
     int integerBreak(int n) {
-        return solve(n,1,0);
+         if(n<4){
+             return n-1;
+         }
+        vector<int> dp(n+1,-1);
+        return solve(n,dp);
     }
 };
 
-//class Solution {
-// public:
-//     vector<int> dp;
-//     int solve(int n, int i, int sum){
-//         if(sum == n) return 1;
-//         if(i == n || sum > n) return 0;
 
-//         if(dp[sum] != -1) return dp[sum];
-
-//         return dp[sum] = max(i*solve(n, i, sum+i), solve(n, i+1, sum));}
-
-//     int integerBreak(int n) {
-//         dp = vector<int> (n+1, -1);
-//         return solve(n, 1, 0);}};
