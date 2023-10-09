@@ -1,40 +1,48 @@
 class Solution {
 public:
-    vector<int> searchRange(vector<int>& nums, int target) {
+    void solveleft(vector<int> &nums,vector<int> &result,int target){
+        int low=0;
+        int high=nums.size()-1;
+        while(low<=high){
+            int mid = low+(high-low)/2;
+            if(nums[mid]==target){
+                result[0]=mid;
+                high = mid-1;
+            }
+            else if(nums[mid]<target){
+                low = mid+1;
+            }
+            else{
+                high = mid-1;
+            }
+        }
+    }
 
-        int counter1=0;
-        int counter2=0;
-        int first;
-        bool flag1=false;
-        bool flag2=false;
-        for(int i=0;i<nums.size();i++)
-        {
-            if(counter1==0)
-            {
-                if(target==nums[i])
-                {
-                  counter1++;
-                  first=i;
-                  flag1=true;
-                }
-            }
-            else
-            {
-                if(target==nums[i])
-                {
-                    counter2++;
-                    flag2=true;
-                }
-            }
-        }
-        if(flag1==false&&flag2==false)
-        {
-            return {-1,-1};
-        }
-        int second=first+counter2;
-        vector<int> ans;
-        ans.push_back(first);
-        ans.push_back(second);
-        return ans;
+
+   void solveright(vector<int> &nums,vector<int> &result,int target){
+       int low=0;
+       int high = nums.size()-1;
+       while(low<=high){
+           int mid = low+(high-low)/2;
+           if(nums[mid]==target){
+               result[1]=mid;
+               low = mid+1;
+           }
+           else if(nums[mid]<target){
+               low=mid+1;
+           }
+           else{
+               high = mid-1;
+           }
+       }
+   }
+
+
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int> result(2,-1);
+        solveleft(nums,result,target);
+        solveright(nums,result,target);
+        return result;
     }
 };
