@@ -1,45 +1,45 @@
 class Solution {
 public:
-    bool backspaceCompare(string s, string t) {
-       string str1="";
-       int low=0;
-       int  n  = s.size();
-       while(low<n){
-           char ch = s.at(low);
-           if(ch == '#'){
-              if(str1.size()!=0){
-                  str1.pop_back();
-              }
-           }
-           else{
-               str1+=ch;
-           }
-           low++;
-       }
+    bool backspaceCompare(string ss, string tt) {
+        //stack:
+        stack<char> st;
+        for(int i=0;i<ss.size();i++){
+            char ch = ss.at(i);
+            if(ch!='#'){
+                st.push(ch);
+            }
+            else{
+                if(st.size()>0){
+                  st.pop();
+                }
+            }
+        }
+  
+        stack<char> st1;
+        for(int i=0;i<tt.size();i++){
+            char ch = tt.at(i);
+            if(ch!='#'){
+                st1.push(ch);
+            }
+            else{
+                if(st1.size()>0){
+                    st1.pop();
+                }
+            }
+        }
 
-       int start=0;
-       string str2="";
-       int  m  = t.size();
-       while(start<m){
-           char ch = t.at(start);
-           if(ch == '#'){
-              if(str2.size()!=0){
-                  str2.pop_back();
-              }
-           }
-           else{
-               str2+=ch;
-           }
-           start++;
-       }
-       cout<<str1<<endl;
-       cout<<str2<<endl;
-       if(str1==str2){
-           return true;
-       }
-       else{
-           return false;
-       }
 
+        string s;
+        while(!st.empty()){
+                s=st.top()+s;
+                st.pop();
+        }
+
+        string t;
+        while(!st1.empty()){
+            t=st1.top()+t;
+            st1.pop();
+        }
+        return s==t;
     }
 };
