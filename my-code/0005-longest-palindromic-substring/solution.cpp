@@ -1,37 +1,39 @@
-class Solution {
+class Solution{
 public:
+    int dp[1001][1001];
+    bool ispalindromic(int i,int j,string &x){
+        if(i>j){
+            return 1;
+        }
+  
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+ 
+        if(x[i]==x[j]){
+            return dp[i][j] = ispalindromic(i+1,j-1,x);
+        }else{
+            return dp[i][j] = 0;
+        }
+    }
+
     string longestPalindrome(string s) {
-        int start;
-        int last;
-        vector<vector<bool>> dp(s.size(),vector<bool>(s.size()));
-        for(int g=0;g<s.size();g++){
-            for(int i=0,j=g;j<s.size();i++,j++){
-                if(g==0){
-                    dp[i][j]=true;
-                }
-                else if(g==1){
-                    if(s[i]==s[j]){
-                        dp[i][j]=true;
+        memset(dp,-1,sizeof(dp));
+        int maxx = INT_MIN;
+        int start=0;
+        int end = 0;
+        for(int i=0;i<s.size();i++){
+            for(int j=0;j<s.size();j++){
+                if(ispalindromic(i,j,s)){
+                    if(j-i+1>maxx){
+                        start = i;
+                        end = j;
+                        maxx = j-i+1;
                     }
-                    else{
-                        dp[i][j]=false;
-                    }
-                }
-                else{
-                    if(dp[i+1][j-1]==true && s[i]==s[j]){
-                        dp[i][j]=true;
-                    }
-                    else{
-                        dp[i][j]=false;
-                    }
-                }
-                if(dp[i][j]==true){
-                    start = i;
-                    last = j;
                 }
             }
         }
-        string str = s.substr(start,last-start+1);
+        string str = s.substr(start,end-start+1);
         return str;
     }
 };
