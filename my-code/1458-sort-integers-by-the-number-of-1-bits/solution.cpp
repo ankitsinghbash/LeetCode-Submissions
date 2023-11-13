@@ -1,30 +1,43 @@
 class Solution {
 public:
-    // Count the number of set bits (1s) in the binary representation of a number.
-    static int countBits(int num) {
-        int count = 0;
-        
-        while (num > 0) {
-            count++;
-            num &= (num - 1);  // Clear the least significant set bit.
+   struct cmp{
+       bool operator()(pair<int,int> &a,pair<int,int> &b){
+           if(a.second == b.second){
+                return a.first<b.first;
+           }
+           return a.second<b.second;
+       }
+   };
+
+    int count_one(int nums){
+        int counter=0;
+        while(nums!=0){
+            int rem = nums%2;
+            if(rem==1){
+                counter++;
+            }
+            nums=nums/2;
         }
-        
-        return count;
+        return counter;
     }
-    
-    static bool compare(int a, int b) {
-        int bitCountA = countBits(a);
-        int bitCountB = countBits(b);
-        
-        if (bitCountA == bitCountB) {
-            return a < b;  // If set bit counts are equal, compare numerically.
-        }
-        
-        return bitCountA < bitCountB;  // Sort by the set bit count in ascending order.
-    }
-    
+
     vector<int> sortByBits(vector<int>& arr) {
-        sort(arr.begin(), arr.end(), compare);
-        return arr;
+        vector<pair<int,int>> ans;
+        for(int i=0;i<arr.size();i++){
+            int val = arr[i];
+            int cnt_1 = count_one(val);
+            ans.push_back({val,cnt_1});
+        }
+
+
+        sort(ans.begin(),ans.end(),cmp());
+
+
+        vector<int> store;
+        for(int i=0;i<ans.size();i++){
+            pair<int,int> P = ans[i];
+            store.push_back(P.first);
+        }
+        return store;
     }
 };
