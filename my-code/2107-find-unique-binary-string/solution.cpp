@@ -1,24 +1,40 @@
 class Solution {
 public:
-    string binGenerate(string curr, int n, unordered_set<string> binSet) {
-        if (curr.size() == n) {
-            if (binSet.find(curr) == binSet.end()) return curr;
-            return "";
-        }
-        
-        string addZero = binGenerate(curr + "0", n, binSet);
-        if (addZero.size() > 0) return addZero;
-
-        return binGenerate(curr + "1", n, binSet);
+   
+   int to_decimal(string &s)
+{
+    int ans  = 0;
+    int power = s.size()-1;
+    for(int i=0;i<s.size();i++){
+           if(s[i]=='1'){
+               ans+=pow(2,power);
+           }
+           power--;
     }
+    return ans;
+}
+
 
     string findDifferentBinaryString(vector<string>& nums) {
-        int n = nums.size();
-        unordered_set<string> binSet;
-
-        for(string s: nums){
-            binSet.insert(s);
+        unordered_set<int> st;
+        for(int i=0;i<nums.size();i++){
+             string str = nums[i];
+             int val = to_decimal(str);
+             st.insert(val);
         }
-        return binGenerate("", n, binSet);
+
+       int n = nums.size();
+       int time = pow(2,n)-1;
+       for(int i=0;i<=time;i++){
+           if(st.find(i)==st.end()){
+               bitset<16> b = bitset<16>(i);
+               string stt = b.to_string();
+               string ans = stt.substr(16-n,n);
+               return ans;
+           }
+       }
+       return "";
+
+
     }
 };
