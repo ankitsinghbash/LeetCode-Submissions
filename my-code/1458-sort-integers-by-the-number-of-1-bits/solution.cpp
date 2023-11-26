@@ -1,3 +1,6 @@
+#pragma GCC optimize("O3")
+#pragma GCC target("popcnt")
+
 class Solution {
 public:
    struct cmp{
@@ -11,12 +14,9 @@ public:
 
     int count_one(int nums){
         int counter=0;
-        while(nums!=0){
-            int rem = nums%2;
-            if(rem==1){
-                counter++;
-            }
-            nums=nums/2;
+        while(nums!=0){   //log2(N)
+           counter+=(nums&1);
+           nums = nums>>1;
         }
         return counter;
     }
@@ -25,7 +25,7 @@ public:
         vector<pair<int,int>> ans;
         for(int i=0;i<arr.size();i++){
             int val = arr[i];
-            int cnt_1 = count_one(val);
+            int cnt_1 = __builtin_popcount(val); //builtin_popcount() give number of 1's in Binary representation of num:
             ans.push_back({val,cnt_1});
         }
 
