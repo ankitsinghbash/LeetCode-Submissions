@@ -1,31 +1,20 @@
 class Solution {
 public:
+   int maxx=INT_MIN;
+   int solve(TreeNode *root){
+       if(root==NULL){
+           return 0;
+       }
 
-  int  solve(TreeNode *root,int &ans){
-    if(root==NULL) return 0;
+       int left = solve(root->left);
+       int right = solve(root->right);
 
-   
-    int left = solve(root->left,ans);
-    int right = solve(root->right,ans); 
-   
-
-    int only_one = max(left,right)+1;
-    int all = left+right+1;
-
-    ans = max({ans,only_one,all});
-    
-    return only_one;
-  }
-
-
-
-
+       maxx = max(maxx,left+right+1);
+       return max(left,right)+1;
+   }
 
     int diameterOfBinaryTree(TreeNode* root) {
-        if(root==NULL) return 0;
-        int ans = INT_MIN;
-        solve(root,ans);
-        return ans-1;
-
+        solve(root);
+        return maxx-1;
     }
 };
