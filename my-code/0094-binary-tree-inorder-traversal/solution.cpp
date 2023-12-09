@@ -1,35 +1,23 @@
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
+
 class Solution {
 public:
-   stack<TreeNode*> st;
-   void solve(TreeNode *root){
-       while(root!=NULL){
-           st.push(root);
-           root=root->left;
-       }
-   }
-
     vector<int> inorderTraversal(TreeNode* root) {
-        //Inorder traversal using stack
-    
-        solve(root);
-        vector<int> ans;
-        while(!st.empty()){
-          TreeNode *node= st.top();
-          ans.push_back(node->val);
-          st.pop();
-          solve(node->right);
+        //iterative way:
+        //what is inorder:left,root,right:
+        vector<int> store;
+        stack<TreeNode*> st;
+        TreeNode *curr = root;
+        while(curr!=NULL || !st.empty()){
+                while(curr!=NULL){
+                    st.push(curr);
+                    curr=curr->left;
+                }
+
+                TreeNode *node = st.top();
+                store.push_back(node->val);
+                st.pop();
+                curr = node->right;
         }
-        return ans;
+        return store;
     }
 };
