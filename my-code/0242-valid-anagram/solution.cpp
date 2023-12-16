@@ -1,16 +1,14 @@
 class Solution {
 public:
     bool isAnagram(string s, string t) {
-        if(s.size()!=t.size()) return false;
-        vector<int> window_s(26,0);
-        vector<int> window_t(26,0);
-        for(int i=0;i<s.size();i++){
-            window_s[s[i]-'a']++;
-            window_t[t[i]-'a']++;
+        vector<int> s_vec(26);
+        for(char ch : s){
+            s_vec[ch-'a']++;
         }
-        if(window_s==window_t){
-            return true;
+        vector<int> t_vec(26);
+        for(char ch : t){
+            t_vec[ch-'a']++;
         }
-        return false;
+        return s_vec==t_vec;
     }
 };
