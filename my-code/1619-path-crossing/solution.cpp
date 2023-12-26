@@ -1,31 +1,39 @@
-struct pair_hash {
-    template <class T1, class T2>
-    std::size_t operator () (const std::pair<T1, T2>& p) const {
-        auto h1 = std::hash<T1>{}(p.first);
-        auto h2 = std::hash<T2>{}(p.second);
-
-        return h1 ^ h2;
+struct pairhash{
+    template <class T1,class T2>
+    size_t operator()(const pair<T1,T2> &a)const{
+        auto x1 = hash<T1>{}(a.first);
+        auto x2 = hash<T2>{}(a.second);
+        return x1^x2;
     }
 };
-
 class Solution {
 public:
-    bool isPathCrossing(std::string path) {
-        int x = 0, y = 0;
-        std::unordered_set<std::pair<int, int>, pair_hash> visited;
-        visited.insert({0, 0});
 
-        for (char direction : path) {
-            x += (direction == 'E') ? 1 : ((direction == 'W') ? -1 : 0);
-            y += (direction == 'N') ? 1 : ((direction == 'S') ? -1 : 0);
+    bool isPathCrossing(string path) {
 
-            if (visited.find({x, y}) != visited.end()) {
-                return true;
+        unordered_set<pair<int,int>,pairhash> st;
+        int x=0;
+        int y=0;
+        st.insert({0,0});
+        for(int i=0;i<path.size();i++){
+            if(path[i]=='E'){
+                   x++;
+            }
+            else if(path[i]=='W'){
+                x--;
+            }
+            else if(path[i]=='N'){
+                y++;
+            }
+            else {
+                y--;
             }
 
-            visited.insert({x, y});
+            if(st.find({x,y})!=st.end()){
+                return true;
+            }
+            st.insert({x,y});
         }
-
         return false;
     }
 };
