@@ -1,32 +1,22 @@
 class Solution {
 public:
-    typedef long long ll;
-    const int mod = 1e9+7;
-    int dp[31][1001];
-    int solve(int n,int &k,int target){
-          if(target<0){
-              return 0;
-          }
-
-          if(n<0) return 0;
-
-          if(n==0 && target==0){
-              return 1;
-          }
-        
-          if(dp[n][target]!=-1){
-              return dp[n][target];
-          }
-
-          ll cnt=0;
-          for(int i=1;i<=k;i++){
-              cnt=(cnt+solve(n-1,k,target-i))%mod;
-          }
-          return dp[n][target] = cnt%mod;
-
-    }
     int numRollsToTarget(int n, int k, int target) {
-        memset(dp,-1,sizeof(dp));
-        return solve(n,k,target);
+        const int mod = 1e9 + 7;
+        vector<vector<int>> dp(n + 1, vector<int>(target + 1, 0));
+        dp[0][0]=1;  
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= target; j++) {
+                int ans=0;
+                for (int x=1;x<=k;x++) {
+                    if(x<=j){
+                       ans = (ans%mod+dp[i-1][j-x]%mod)%mod; 
+                    }
+                }
+                dp[i][j]=ans%mod;
+            }
+        }
+        
+        return dp[n][target];
     }
 };
+
