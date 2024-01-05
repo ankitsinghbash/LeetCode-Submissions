@@ -1,151 +1,99 @@
-
 class Solution {
 public:
-    //DFS GIVE TLE SOLVE BY DISJOINT SET:(TRY OWNSELF 3,4 TIME AGAIN);
     vector<int> parent;
     vector<int> rank;
-    
-    int find (int x) {
-        if (x == parent[x]) 
+
+    int find(int x){
+        if(x==parent[x]){
             return x;
-        
-        return parent[x] = find(parent[x]);
+        }
+        return parent[x]=find(parent[x]);
     }
-    
-    void Union (int x, int y) {
+
+    void Union(int x,int y){
         int x_parent = find(x);
         int y_parent = find(y);
-        
-        if (x_parent == y_parent) 
-            return;
-        
-        if(rank[x_parent] > rank[y_parent]) {
-            parent[y_parent] = x_parent;
-        } else if(rank[x_parent] < rank[y_parent]) {
-            parent[x_parent] = y_parent;
-        } else {
-            parent[x_parent] = y_parent;
+
+         if(rank[x_parent]<rank[y_parent]){
+           parent[x_parent]=y_parent;
         }
+        else if(rank[x_parent]>rank[y_parent]){
+             parent[y_parent] = x_parent;
+        }
+        else{
+          parent[y_parent] = x_parent;
+          rank[x_parent]++;
+        } 
     }
-    
+
     int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) {
+        //Implement using DFS : Disjoint union set:
+        int result=0;
         int n = vals.size();
-        
         parent.resize(n);
-        rank.resize(n, 1);
-        
-        for(int i = 0; i<n; i++) {
-            parent[i] = i;
-        }
-        
-        unordered_map<int, vector<int>> adj;
-        
-        for(vector<int> &vec : edges) {
-            int u = vec[0];
-            int v = vec[1];
-            
-            adj[u].push_back(v);
-            adj[v].push_back(u);
-        }
-        
-        
-        map<int, vector<int>> val_to_nodes;
-        
-        for (int i = 0; i < n; i++) {
-            int value = vals[i];
-            
-            val_to_nodes[value].push_back(i);
-        }
-        
-        int result = n;
-        
-        vector<bool> is_active(n, false); //non active in the beginning
-        
-        for (auto &it : val_to_nodes) {
-            
-            vector<int> nodes = it.second;
-            
-            for (int &u : nodes) {
-                
-                for (int &v: adj[u]) {
-                    if (is_active[v]) {
-                        Union(u, v);
-                    }
-                }
-                is_active[u] = true;
-            }
-            
-            vector<int> tumhare_parents;
-            
-            for (int &u : nodes) 
-                tumhare_parents.push_back(find(u));
-            
-            sort(tumhare_parents.begin(), tumhare_parents.end());
-                        
-            int sz = tumhare_parents.size();
-            
-            for (int j = 0; j < sz; j++) {
-                long long count = 0;
-                
-                int cur_parent = tumhare_parents[j];
-                
-                while (j < sz && tumhare_parents[j] == cur_parent) {
-                    j++, 
-                    count++;
-                }
-                j--;
-                
-                result += (count * (count - 1))/2;
-            }
-        }
-        
-        return result;
-    }
-};
-
-
-
-
-/*DFS GIVE TLE: SOLVE BY DSU
-class Solution {
-public:
-  //by dfs solution given TLE:
-    int goodpath=0;
-    void dfs(unordered_map<int,vector<int>> &adj,vector<int> &vals,vector<int> &visited,int start,int curr){
-        if(start!=curr&&vals[start]==vals[curr]){
-            goodpath++;
-        }
-    
-         visited[curr]=1; //visited;
-         for(auto &child : adj[curr]){
-             if(!visited[child]){
-                  if(vals[child]<=vals[start]){
-                     dfs(adj,vals,visited,start,child);
-                  }
-             }
-         }
-     
-
-    }
-
-   
-    int numberOfGoodPaths(vector<int>& vals, vector<vector<int>>& edges) {
-        unordered_map<int,vector<int>> adj;
-        for(auto &x : edges){
-            int u = x[0];
-            int v = x[1];
-
-            adj[u].push_back(v);
-            adj[v].push_back(u);
-        }
-        
-        int n =vals.size();
+        rank.resize(n,1);
         for(int i=0;i<n;i++){
-            vector<int> visited(n,0);
-            dfs(adj,vals,visited,i,i);   //start, curr;
-        }   
-   
-        return goodpath/2+vals.size();
+            parent[i]=i;
+        }
+        unordered_map<int,vector<int>> adj;
+    
+        for(auto &vec : edges){
+             int start = vec[0];
+             int end = vec[1];
+
+             adj[start].push_back(end);
+             adj[end].push_back(start);
+        }
+
+        //taken value map for value_to_node:
+        map<int,vector<int>> value_to_node;
+        for(int i=0;i<n;i++){
+            int val = vals[i];
+            value_to_node[val].push_back(i);
+        }
+ 
+       //Now main logic to implementation of the question:
+       //vector<int> store;
+       vector<bool> is_active(n,false);
+       for(auto it=value_to_node.begin();it!=value_to_node.end();it++){
+               vector<int> node= it->second;
+               for(auto &u : node){
+                      for(auto &v : adj[u]){
+                          if(is_active[v]){
+                              Union(u,v);
+                          }
+                      }
+                      is_active[u]=true;
+               }
+
+               vector<int> tumhare_parents;
+               for(int i=0;i<node.size();i++){
+                   int main_parent = find(node[i]);
+                   tumhare_parents.push_back(main_parent);
+               }
+
+            //   unordered_map<int,int> mp1;
+            //   for(int i=0;i<tumhare_parents.size();i++){
+            //       mp1[tumhare_parents[i]]++;
+            //   }
+
+            //   for(auto it = mp1.begin();it!=mp1.end();it++){
+            //       int val = it->second;
+            //       int cnt = val*(val-1)/2;
+            //       result += cnt;
+            //   }
+            sort(tumhare_parents.begin(),tumhare_parents.end());
+            int j=0;
+            while(j<tumhare_parents.size()){
+                int cnt=0;
+                int curr = tumhare_parents[j];
+                while(j<tumhare_parents.size() && tumhare_parents[j]==curr){
+                    j++;
+                    cnt++;
+                }
+                result+=cnt*(cnt-1)/2;
+            }
+       }
+       return result+n;
     }
 };
-*/
