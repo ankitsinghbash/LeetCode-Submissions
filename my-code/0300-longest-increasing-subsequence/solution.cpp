@@ -1,28 +1,24 @@
 class Solution {
 public:
-    int dp[2501][2501];
-    int solve(int idx,int prev,vector<int> &nums){
-       if(idx>nums.size()){
-           return 0;
-       }
-  
-       if(dp[idx][prev]!=-1){
-           return dp[idx][prev];
-       }
-
-       int pick=0;
-       int notpick=0;
-       notpick = solve(idx+1,prev,nums);
-       if(prev==0 || nums[idx-1]>nums[prev-1]){
-            pick =  1+solve(idx+1,idx,nums);
-       }
-
-       return dp[idx][prev] = max(pick,notpick);
+    int dp[2500][2500];
+    int solve(int prev,int i,vector<int> &nums){
+          //base case:
+          if(i>=nums.size()) return 0;
+         if(dp[prev+1][i]!=-1){
+             return dp[prev+1][i];
+         }
+          int taken=0;
+          int nottaken=0;
+          if(prev==-1 || nums[prev]<nums[i]){
+            taken =  1+solve(i,i+1,nums);
+          }
+         nottaken = solve(prev,i+1,nums);
+         return dp[prev+1][i] =  max(taken,nottaken);
 
     }
     int lengthOfLIS(vector<int>& nums) {
-        //using recursion: 
+        //if(nums[i]>nums[j]) means dp[i]=max(dp[i],dp[j]+1):
         memset(dp,-1,sizeof(dp));
-        return solve(1,0,nums);
+      return solve(-1,0,nums);
     }
 };
