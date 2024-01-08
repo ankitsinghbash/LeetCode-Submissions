@@ -1,45 +1,33 @@
 class Solution {
 public:
-   double OK(int mid,vector<int> &dist){
-       //mid is speed:
-       double time = 0;
-       for(int i=0;i<dist.size();i++){
-         double y = double(dist[i])/mid;
-         if(i==dist.size()-1){
-             time+=y;
-         }
-         else{
-             time+=ceil(y);
-         }
-       }
-      return time;
-   }
+    double check(int speed,vector<int> &dist){
+             double hour = 0.0;
+             for(int i=0;i<dist.size();i++){
+                 if(i==dist.size()-1){
+                     double val = (dist[i]/(double)speed);
+                     hour+=val;
+                     break;
+                 }
+                 double val = ceil(dist[i]/(double)speed);
+                 hour+=val;
+             }
+             return hour;
 
-   bool isPossible(vector<int>& dist, double hour, int speed) {
-        double time = OK(speed,dist);
-        return time <= hour;
     }
-
-
-
     int minSpeedOnTime(vector<int>& dist, double hour) {
-        
-        int low = 0;
-        int high = 1e7;
-
-        if (!isPossible(dist, hour, high)) {
-            return -1;
-        }
-
-        while(low<=high){
+        int low=1;
+        int high = 100000001;
+        int result  = -1;
+        while(low<high){
             int mid = low+(high-low)/2;
-            if(OK(mid,dist)<=hour){
-                high=mid-1;
+            if(check(mid,dist)<=hour){
+                       high = mid;
+                       result = mid;
             }
             else{
                 low = mid+1;
             }
         }
-        return low;
+        return result;
     }
 };
