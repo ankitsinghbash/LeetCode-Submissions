@@ -1,52 +1,46 @@
 class Solution {
 public:
-   
-    int solve(int cap,vector<int> &weights){
-
-       int curr=0;
-       int cnt=0;
-       for(int i=0;i<weights.size();i++){
-           int val =  weights[i];
-           if(val>cap){
-               return INT_MAX;
-           }
-           curr+=val;
-           if(curr==cap){
-               cnt++;
-               curr=0;
-           }
-           if(curr>cap){
-               cnt++;
-               curr=val;
-           }
-       }
-       if(curr!=0){
-           if(curr<=cap){
-               cnt++;
-           }
-       }
-       return cnt;
-
-
+     int check(int cap,vector<int> &weights){
+        int currsum = 0;
+        int totalday = 0;
+         int n = weights.size();
+         for(int i=0;i<n;i++){
+                if(weights[i]>cap){
+                    return INT_MAX;
+                }
+               currsum+=weights[i];
+               if(currsum==cap){
+                   totalday++;
+                   currsum=0;
+               }
+              if(currsum>cap){
+                   totalday++;
+                  currsum=0;
+                  currsum = weights[i];
+              }
+          }
+         if(currsum!=0){
+               totalday++;
+          }
+         return totalday;
 
     }
-  
-
-
     int shipWithinDays(vector<int>& weights, int days) {
-        int low = *min_element(weights.begin(),weights.end());
-        int high = accumulate(weights.begin(),weights.end(),0);
- 
-       while(low<=high){
-           int cap = low+(high-low)/2;
-           if(solve(cap,weights)<=days){
-               high=cap-1;
-           }
-           else{
-               low = cap+1;
-           }
-       }
-       return low;
-
+        
+        int low=1;
+        int high =INT_MAX;
+        int result = -1;
+        while(low<high){
+                 int mid = low+(high-low)/2;   //mycapacity:
+                 if(check(mid,weights)<=days){
+                          high = mid;
+                          result = mid;
+                 }
+                 else{
+                        low = mid+1;
+                 }
+        }
+        
+        return result;
     }
 };
