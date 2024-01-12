@@ -1,24 +1,7 @@
 class Solution {
 public:
-   int solve(vector<int> &nums){
-      int l=0;
-      int h = nums.size()-1;
-      int result = -1;
-      while(l<h){
-          int mid = l+(h-l)/2;
-          if(nums[mid]>nums[h]){
-              l = mid+1;
-          }
-          else{
-              h = mid;
-             result = h;
-          }
-      }
-     return h;
-   }
-
-
-   int binary_search(int l,int h,vector<int> &nums,int target){
+    // pivot is always first value after condition:
+    int binary_search(int l,int h,vector<int> &nums,int target){
 
         while(l<=h){
             int mid = l+(h-l)/2;
@@ -33,16 +16,25 @@ public:
             }
         }
         return -1;
-
    }
-    
-
-
 
     int search(vector<int>& nums, int target) {
-        int pivot_idx = solve(nums);
+        int low=0;
+        int high = nums.size()-1;
+        int result = 0;
+        while(low<high){
+            int mid = low+(high-low)/2;
+            if(nums[mid]<=nums[high]){
+                high = mid;
+            }
+            else{
 
-        int idx = binary_search(0,pivot_idx-1,nums,target);
+                low = mid+1;
+                result = low;
+            }
+        }
+        int pivot_idx = result;
+          int idx = binary_search(0,pivot_idx-1,nums,target);
         if(idx!=-1){
             return idx;
         }
