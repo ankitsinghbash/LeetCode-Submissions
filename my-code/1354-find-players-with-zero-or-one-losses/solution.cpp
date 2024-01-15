@@ -1,38 +1,54 @@
 class Solution {
 public:
+    vector<int> remove_duplicate(vector<int> &winner){
+        vector<int> store;
+        int n  = winner.size();    
+         for(int i=1;i<winner.size();i++){
+             if(winner[i]==winner[i-1]){
+                 continue;
+             }
+             else{
+                 store.push_back(winner[i-1]);
+             }
+         }
+         store.push_back(winner[n-1]);
+         return store;
+
+    }
     vector<vector<int>> findWinners(vector<vector<int>>& matches) {
-        unordered_map<int,int> win;
+        unordered_set<int> st;   //loss:
+        vector<vector<int>> result(2);
+        vector<int> winn;
+        map<int,int> mp;
+        sort(matches.begin(),matches.end());
         for(int i=0;i<matches.size();i++){
-            int val = matches[i][0];
-            win[val]++;
+                  int loss = matches[i][1];
+                  int winner = matches[i][0];
+                  st.insert(loss);
+                  winn.push_back(winner);
+                  mp[loss]++;
         }
-
-        unordered_map<int,int> loss;
-        for(int i=0;i<matches.size();i++){
-            int val = matches[i][1];
-            loss[val]++;
-        }
-  
-        vector<int> fst;
-        for(auto it=win.begin();it!=win.end();++it){
-            int val = it->first;
-            if(loss.find(val)==loss.end()){
-               fst.push_back(val); 
-            }
-        }
-        sort(fst.begin(),fst.end());
-        vector<int> sec;
-        for(auto it=loss.begin();it!=loss.end();++it){
-            if(it->second==1){
-                sec.push_back(it->first);
-            }
-        }
-        sort(sec.begin(),sec.end());
         
-        vector<vector<int>> real;
-        real.push_back(fst);
-        real.push_back(sec);
-        return real;
+        vector<int> win = remove_duplicate(winn);
 
+        vector<int> ans1;
+        for(int i=0;i<win.size();i++){
+            int val = win[i];
+            if(st.find(val)==st.end()){
+                ans1.push_back(val);
+            }
+        }
+
+        sort(ans1.begin(),ans1.end());
+        result[0]=ans1;
+        vector<int> ans2;
+        for(auto it = mp.begin();it!=mp.end();it++){
+            if(it->second==1){
+                ans2.push_back(it->first);
+            }
+        }
+       
+        result[1]=ans2;
+        return result;
     }
 };
