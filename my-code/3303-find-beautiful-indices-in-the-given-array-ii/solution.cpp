@@ -1,33 +1,57 @@
 class Solution {
 public:
-    vector<int> solve(string &s,string &a){
-        vector<int> ans;
+    vector<int> solve(string &s,string &pattern){
+      
+        int m = pattern.size();
+        vector<int> lsp(m,0);
+        int i=1;
+        int len=0;                 //aca
+        while(i<m){
+            if(pattern[i]==pattern[len]){
+                len++;
+                lsp[i]=len;
+                i++;
+            }
+            else{
+                if(len!=0){
+                    len = lsp[len-1];
+                }
+                else{
+                    lsp[i]=0;
+                    i++;
+                }
+            }
+        }
+        
+        
+        //Now apply kmp algo:
+        vector<int> result;
+        i=0;
+        int j=0;
         int n = s.size();
-        vector<int> pref(a.size(),0);
-        for(int i=1,j=0;i<a.size();i++){
-            while(j>0 && a[i]!=a[j]){
-                j = pref[j-1];
-            }
-            if(a[i]==a[j]){
+        while(i<n){
+            if(s[i]==pattern[j]){
+                i++;
                 j++;
             }
-            pref[i]=j;
-        }
-        for(int i=0,j=0;i<n;i++){
-            while(j>0 && s[i]!=a[j]){
-                j=pref[j-1];
+            if(j==m){
+                result.push_back(i-j);
+                j = lsp[j-1];
             }
-            if(s[i]==a[j]){
-                j++;
-            }
-            int len = a.size();
-            if(j==len){
-                ans.push_back(i-len+1);
-                j=pref[j-1];
+            else if(i<n && s[i]!=pattern[j]){
+                if(j!=0){
+                 j = lsp[j-1];
+                }
+                else{
+                    i++;
+                }
             }
         }
-        return ans;
+        
+        return result;
+        
     }
+    
     vector<int> beautifulIndices(string s, string a, string b, int k) {
         if(s.size() < a.size() || s.size() < b.size()) return {};
         
