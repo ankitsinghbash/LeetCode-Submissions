@@ -1,33 +1,36 @@
 class Solution {
 public:
-   void solve(TreeNode *root,unordered_map<int,int> &mp,int &ans){
-     if(root==NULL)  return;      
+    int cnt = 0;
 
-      mp[root->val]++;
-      if(root->left==NULL && root->right==NULL){
-          int cnt=0;
-          for(auto it =mp.begin();it!=mp.end();it++){
-              if(it->second%2!=0){
-                  cnt++;
-              }
-          }
-          if(cnt<=1){
-              ans++;
-          }
-      }
+    void solve(TreeNode* root, unordered_map<int, int>& mp) {
+        if (root == nullptr) {
+            return;
+        }
 
-      solve(root->left,mp,ans);
-      solve(root->right,mp,ans);
-      mp[root->val]--;
-   }
+        mp[root->val]++;
 
+        if (root->left == nullptr && root->right == nullptr) {
+            int odd_time = 0;
+            for (auto it = mp.begin(); it != mp.end(); it++) {
+                if (it->second % 2 != 0) {
+                    odd_time++;
+                }
+            }
+            if (odd_time <= 1) { // Corrected condition: Check if there is at most 1 odd frequency
+                cnt++;
+            }
+        }
 
+        solve(root->left, mp);
+        solve(root->right, mp);
 
-    int pseudoPalindromicPaths (TreeNode* root) {
-    
-        int ans = 0;
-        unordered_map<int,int> mp;
-        solve(root,mp,ans);
-        return ans;
+        mp[root->val]--;
+    }
+
+    int pseudoPalindromicPaths(TreeNode* root) {
+        unordered_map<int, int> mp;
+        solve(root, mp);
+        return cnt;
     }
 };
+
