@@ -1,34 +1,31 @@
-#include <vector>
-#include <queue>
-
-using namespace std;
-
 class Solution {
 public:
     vector<int> sequentialDigits(int low, int high) {
-        vector<int> ans;
         queue<int> qu;
-
-        for (int i = 1; i <= 9; i++) {
+        for(int i=1;i<=9;i++){
             qu.push(i);
         }
+ 
+        vector<int> ans;
+        while(!qu.empty()){
+            int size = qu.size();
+            while(size--){
+                int val = qu.front();
+                int last = val%10;
+                qu.pop();
 
-        while (!qu.empty()) {
-            int nums = qu.front();
-            qu.pop();
+                if(low<=val && val<=high){
+                    ans.push_back(val);
+                }
 
-            if (nums <= high && nums >= low) {
-                ans.push_back(nums);
-            }
-
-            int lastDigit = nums % 10;
-
-            if (lastDigit < 9) {
-                qu.push(nums * 10 + lastDigit + 1);
+                if(last==9){
+                    continue;
+                }
+                qu.push(val*10+last+1);
+               
             }
         }
 
         return ans;
     }
 };
-
