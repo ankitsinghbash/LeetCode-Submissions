@@ -5,14 +5,15 @@ public:
         for(int i=0;i<s.size();i++){
             mp[s[i]]++;
         }
-        
+        int ans=-1;
         for(int i=0;i<s.size();i++){
-            char ch = s.at(i);
-            auto it = mp.find(ch);
-            if(it->second==1){
-                return i;
+            char ch = s[i];
+            if(mp[ch]==1){
+                ans = i;
+                break;
             }
         }
-        return -1;
+        return ans;
     }
+
 };
