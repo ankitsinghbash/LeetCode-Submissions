@@ -1,30 +1,13 @@
 class Solution {
 public:
- 
-   int solve(int n,int val,vector<int> &dp){
- 
-    if(n==0){
-        return 0;
-    }
-
-    if(val*val>n){   //but more approcriate is if(val*val>n)
-        return 1e9;
-    }
-    
-     if(dp[n]!=-1){
-         return dp[n];
-     }
-   
-     int pick = 1+solve(n-val*val,val,dp);
-     int notpick = solve(n,val+1,dp);
-
-     return dp[n]=min(pick,notpick);
-
-   }
-   
- 
     int numSquares(int n) {
-      vector<int> dp(n+1,-1);
-        return solve(n,1,dp);
+        vector<int> dp(n+1,INT_MAX);
+        dp[0]=0;
+        for(int i=1;i<n+1;i++){
+             for(int val=1;val*val<=i;val++){
+                 dp[i] = min(dp[i],dp[i-val*val]+1);
+             }
+        }
+        return dp[n];
     }
 };
