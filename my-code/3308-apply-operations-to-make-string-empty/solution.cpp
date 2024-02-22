@@ -1,37 +1,30 @@
 class Solution {
 public:
     string lastNonEmptyString(string s) {
-        unordered_map<char,int> mp;
-        int maxx=0;
+        int maxx_cnt=0;
+        vector<int> alpha(26,0);
         for(int i=0;i<s.size();i++){
-            mp[s[i]]++;
-            maxx = max(maxx,mp[s[i]]);
+            int idx = s.at(i)-'a';
+            alpha[idx]++;
         }
-
-        string ans="";
+        for(int i=0;i<26;i++){
+            int cnt = alpha[i];
+            maxx_cnt = max(maxx_cnt,cnt);
+        }
+        
+         string ans="";
         for(int i=s.size()-1;i>=0;i--){
-            char ch = s.at(i);
-            if(mp[ch]==maxx){
-                mp[ch]=0;
-               ans=ch+ans;
-            }
+               char ch = s.at(i);
+               int idx = ch-'a';
+               if(alpha[idx]==maxx_cnt){
+                   ans=ch+ans;
+                   alpha[idx]=0;
+               }
         }
+     
         return ans;
-
+        
     }
 };
 
 
-//aaaaab
-//a---4-1=aaa
-//b---1-1=0
-
-
-
-//aaabcbbca:
-//a--4-2=2-1=1     a bbb
-//b--3-2=1-1=0
-//c--2-2=0   0
-
-
-//4
