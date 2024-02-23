@@ -1,53 +1,54 @@
 class Solution {
 public:
-    //I am depend on k not at destination;
-    //means find all the minimum cost path at k distance initial take dest as INT_MIN->and if in final state dest is not INT_MIN; means is reach the destination otherwise return -1;
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        unordered_map<int,vector<pair<int,int>>> adj;
-        for(vector<int> &x : flights){
-            int u = x[0];
-            int v = x[1];
-            int cost = x[2];
+         //simple bfs:
+         vector<int> dist(n,INT_MAX);
 
-            adj[u].push_back({v,cost});
-        }
+         unordered_map<int,vector<pair<int,int>>> mp;
 
-        vector<int> dist(n,INT_MAX); //store the minimum cost of all the path from source;
-        
-        queue<pair<int,int>> qu;
-        qu.push({src,0});
-        dist[src]=0;
+         for(int i=0;i<flights.size();i++){
+             int start = flights[i][0];
+             int end   = flights[i][1];
+             int cost  = flights[i][2];
 
-        int step=0;
-        while(!qu.empty()&&step<=k){
-           
-             int N = qu.size();
+             mp[start].push_back({end,cost});
+         }
 
-             while(N--){
-                  
-               int u = qu.front().first;
-               int vcost = qu.front().second;
 
-               qu.pop();
-               
-               for(pair<int,int> &y : adj[u]){
-                   int destination = y.first;
-                   int cost = y.second;
+         queue<pair<int,int>> qu;
+         int cnt=0;   //this denote the number of stop in a flight:
+         qu.push({src,0});
+         int currcost=0;
 
-                   if(dist[destination]>cost+vcost){  //means this cost is now less upate it:
-                       dist[destination]=cost+vcost;
+         while(!qu.empty() && cnt<=k){
+                int size = qu.size();
+                while(size--){
+                   
+                    auto data = qu.front();
+                    qu.pop();
+                    int v = data.first;
+                    int cost = data.second;
+         
+                    for(auto &x : mp[v]){
+                           int destination = x.first;
+                           int cost_second = x.second;
 
-                      //if this cost is less again check less cost form here:
-                      qu.push({destination,cost+vcost});
+                           if(dist[destination]>cost+cost_second){
+                               dist[destination] = cost+cost_second;
+                               qu.push({destination,cost+cost_second});
+                           }
 
-                   }
-               }
-               
-             }
-             step++; //at each level increase step;
-           
-        }
-        return dist[dst] == INT_MAX ? -1 : dist[dst];
+                    }
+
+
+                }
+                cnt++;
+         }
+
+         if(dist[dst]==INT_MAX){
+             return -1;
+         }
+         return dist[dst];
 
     }
 };
