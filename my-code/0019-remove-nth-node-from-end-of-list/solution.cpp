@@ -1,61 +1,37 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-
-    int sizeofLL(ListNode *head)
-    {
-        int counter=0;
-        ListNode *temp=head;
-        while(temp!=NULL)
-        {
-           temp=temp->next;
-           counter++;
-        }
-        return counter;
+    int total_node(ListNode *&head){
+           int cnt=0;
+           ListNode *temp = head;
+           while(temp!=NULL){
+               temp = temp->next;
+               cnt++;
+           }
+           return cnt;
     }
+
+
     ListNode* removeNthFromEnd(ListNode* head, int n) {
-        
+        int total = total_node(head);
+        int node_num = total-n+1;
+        if(node_num==1){
+            return head->next;
+        }
 
-     //two option:
-     //count the size of the LinkedList then subtract the value of n from the size and then remove that element form start:
-      int counter=0;
-      int size=sizeofLL(head);
-      int val=size-n;
-      //remove the val element form start:
-      if(n==0)
-      {
-          return head;
-      }
-      if(n==size)
-      {
-          head=head->next;
-          return head;
-      }
-
-      if(val==0)
-      {
-          head=NULL;
-          return head;
-      }
-
-      ListNode *temp=head;
-      ListNode *prev=NULL;
-      while(val!=0)
-      {
-          prev=temp;
-          temp=temp->next;
-          val--;
-      }
-      prev->next=temp->next;
-      return head;
+        ListNode *temp = head;
+        ListNode *prev = NULL;
+        ListNode *new_node = NULL;
+        int cnt=0;
+        while(cnt<=node_num-2){
+            prev = temp;
+            temp = temp->next;
+            new_node = temp->next;
+            cnt++;
+        }
+     
+        if(cnt==0) return prev;
+        prev->next = new_node;
+        return head;
+         
     }
 };
