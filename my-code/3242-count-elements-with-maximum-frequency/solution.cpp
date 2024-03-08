@@ -7,14 +7,16 @@ public:
         }
         int maxx=0;
         for(auto it = mp.begin();it!=mp.end();it++){
-            maxx = max(maxx,it->second);
-        }
-        int ans=0;
-        for(auto it = mp.begin();it!=mp.end();it++){
-            if(it->second==maxx){
-                ans+=it->second;
+            if(it->second>maxx){
+                maxx=it->second;
             }
         }
-        return ans;
+        int cnt=0;
+        for(auto it = mp.begin();it!=mp.end();it++){
+            if(it->second==maxx){
+              cnt+=it->second;
+            }
+        }
+        return cnt;
     }
 };
