@@ -1,34 +1,42 @@
+#include <vector>
+#include <queue>
+#include <unordered_set>
+
+using namespace std;
+
 class Solution {
 public:
     int shortestPathLength(vector<vector<int>>& graph) {
         int n = graph.size();
-        int maxMask = (1 << n) - 1;
-        queue<pair<int, pair<int, int>>> q;
-        set<pair<int, int>> s;   // to check for visited node
+        int target = (1 << n) - 1;
+        queue<pair<int, int>> q; // {node, bitmask}
+        vector<vector<bool>> visited(n, vector<bool>(1 << n, false));
 
-        for(int i = 0; i < n; i++){
-            int mask = (1 << i);
-            q.push({i, {0, mask}}); // node, distance, visited mask
-            s.insert({i, mask}); // node, mask
+        // Initialize the queue with all nodes as starting points
+        for (int i = 0; i < n; ++i) {
+            q.push({i, 1 << i});
+            visited[i][1 << i] = true;
         }
 
-        while(!q.empty()){
-            int node = q.front().first;
-            int dis = q.front().second.first;
-            int mask = q.front().second.second;
-            q.pop();
-
-            for(auto it : graph[node]){
-                int newMask = mask | (1 << it);
-                if(newMask == maxMask)     // if we visited all nodes
-                    return dis + 1;
-                if(s.count({it, newMask}))    // if we visited it before
-                    continue;
-                
-                q.push({it, {dis + 1, newMask}});
-                s.insert({it, newMask});
+        int steps = 0;
+        while (!q.empty()) {
+            int size = q.size();
+            for (int i = 0; i < size; ++i) {
+                auto [node, bitmask] = q.front();
+                q.pop();
+                if (bitmask == target) // All nodes have been visited
+                    return steps;
+                for (int neighbor : graph[node]) {
+                    int new_bitmask = bitmask | (1 << neighbor);
+                    if (!visited[neighbor][new_bitmask]) {
+                        q.push({neighbor, new_bitmask});
+                        visited[neighbor][new_bitmask] = true;
+                    }
+                }
             }
+            ++steps;
         }
-        return 0;
+        return -1; // Should not reach here
     }
 };
+
