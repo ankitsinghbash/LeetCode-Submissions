@@ -1,45 +1,19 @@
 class Solution {
 public:
     vector<int> productExceptSelf(vector<int>& nums) {
-
-      
-
-
-       vector<int> check(nums.begin(),nums.end());
-       int totalzero=0;
-       for(int i=0;i<nums.size();i++){
-           if(check[i]==0){
-               totalzero++;
-               check[i]=1;
-           }
-       }
-       int newtotal=1;
-       for(int i=0;i<check.size();i++){
-           newtotal*=check[i];
-       }
-
-        int prod=1;
-        for(int i=0;i<nums.size();i++){
-               prod*=nums[i];
+        //Most optimal O(1) space with no division with O(n):
+        int n = nums.size();
+        vector<int> prefix_prod(n,1);
+        for(int i=1;i<n;i++){
+             prefix_prod[i] = prefix_prod[i-1]*nums[i-1];
         }
-        vector<int> ans;
-        for(int i=0;i<nums.size();i++){
-            if(2<=totalzero){
-                 ans.push_back(0);
-            }
-            else{
-            if(nums[i]==0){
-                nums[i]=1;
-                int newly = newtotal/nums[i];
-                ans.push_back(newly);
-            }
-            else
-            {
-                int newly = prod/nums[i];
-                ans.push_back(newly);
-            }
-            }
+    
+        int right=1;
+        for(int i=n-1;i>=0;i--){
+            prefix_prod[i] = prefix_prod[i]*right;
+            right=right*nums[i];
         }
-        return ans;
+        return prefix_prod;
+
     }
 };
