@@ -1,72 +1,44 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
-/**
- * Definition for singly-linked list.
-  * struct ListNode {
-   *     int val;
-    *     ListNode *next;
-     *     ListNode(int x) : val(x), next(NULL) {}
-      * };
-       */
+class Solution {
+public:
+    
+    ListNode *reverse_LL(ListNode *head,ListNode *prev){
         
-        class Solution {
-        private:
-            ListNode* reverseList(ListNode* head)
-                {
-                        if(head==NULL || head->next==NULL)
-                                    return head;
-                                            ListNode* nextHead = head->next;
-                                                    head->next = NULL;
-                                                            ListNode* newHead=head;
-                                                                    while(true)
-                                                                            {
-                                                                                        ListNode* tmp = nextHead->next;
-                                                                                                    nextHead->next = newHead;
-                                                                                                                newHead = nextHead;
-                                                                                                                            nextHead = tmp;
-                                                                                                                                        if(nextHead==NULL)
-                                                                                                                                                        return newHead;
-                                                                                                                                                                }
-                                                                                                                                                                    }
-                                                                                                                                                                        
-                                                                                                                                                                        public:
-                                                                                                                                                                            bool isPalindrome(ListNode* head) {
-                                                                                                                                                                                    if(head==NULL || head->next==NULL)
-                                                                                                                                                                                                return true;
-                                                                                                                                                                                                        
-                                                                                                                                                                                                                ListNode* slow = head;
-                                                                                                                                                                                                                        ListNode* fast = head;
-                                                                                                                                                                                                                                while(fast && fast->next)
-                                                                                                                                                                                                                                        {
-                                                                                                                                                                                                                                                    slow = slow->next;
-                                                                                                                                                                                                                                                                fast = fast->next->next;
-                                                                                                                                                                                                                                                                        }
-                                                                                                                                                                                                                                                                                
-                                                                                                                                                                                                                                                                                        if(fast==NULL)
-                                                                                                                                                                                                                                                                                                    slow = reverseList(slow);
-                                                                                                                                                                                                                                                                                                            else
-                                                                                                                                                                                                                                                                                                                    {
-                                                                                                                                                                                                                                                                                                                                slow->next = reverseList(slow->next);
-                                                                                                                                                                                                                                                                                                                                            slow = slow->next;
-                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                            
-                                                                                                                                                                                                                                                                                                                                                                    ListNode* Head = head;
-                                                                                                                                                                                                                                                                                                                                                                            while(slow)
-                                                                                                                                                                                                                                                                                                                                                                                    {
-                                                                                                                                                                                                                                                                                                                                                                                                if(slow->val!=Head->val)
-                                                                                                                                                                                                                                                                                                                                                                                                                return false;
-                                                                                                                                                                                                                                                                                                                                                                                                                            else
-                                                                                                                                                                                                                                                                                                                                                                                                                                        {
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        slow = slow->next;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Head = Head->next;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            return true;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                };
+         if(head==NULL) return prev;
+ 
+         ListNode *temp = head->next;
+         head->next = prev;
+         return reverse_LL(temp,head);
+
+    }
+    
+    bool isPalindrome(ListNode* head) {
+        ListNode *temp1 = head;
+
+        ListNode *slow = head;
+        ListNode *fast = head;
+        while(fast!=NULL && fast->next!=NULL){
+            fast=fast->next->next;
+            slow = slow->next;
+        }
+
+        ListNode *second_half = NULL;
+        if(fast==NULL){
+            second_half = slow;
+        }
+        else{
+            second_half = slow->next;
+        }
+        
+
+        ListNode *temp2 = reverse_LL(second_half,NULL);
+
+        while(temp2!=NULL){
+            if(temp1->val!=temp2->val){
+                return false;
+            }
+            temp1=temp1->next;
+            temp2=temp2->next;
+        }
+        return true;
+    }
+};
