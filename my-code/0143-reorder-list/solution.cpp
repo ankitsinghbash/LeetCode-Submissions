@@ -1,44 +1,27 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
+    ListNode *reverse_LL(ListNode *head,ListNode *prev){
+        if(head==NULL) return prev;
 
-   
-     ListNode* reverseList(ListNode* head) {
-       ListNode *curr = head;
-       ListNode *temp = NULL;
-       ListNode *prev = NULL;
-       while(curr!=NULL){
-           temp = curr->next;
-           curr->next=prev;
-           prev=curr;
-           curr = temp;
-       }
-       return prev;
+        ListNode *temp = head->next;
+        head->next = prev;
+        return reverse_LL(temp,head);
+
     }
 
-    void reorderList(ListNode* head) {
+    void reorderList(ListNode* &head) {
+    
+        ListNode *temp1 = head;
 
- //        if(!head->next) return;
-
-
-      ListNode *slow = head;
-      ListNode *fast = head;
-      while(fast!=NULL && fast->next!=NULL){
-          slow=slow->next;
-          fast=fast->next->next;
-      }
-
-      ListNode *dummy = reverseList(slow);  //dummy not only give the head: //it's given a new linkedlist with dummy as a head:
-
+        ListNode *slow = head;
+        ListNode *fast = head;
+        while(fast!=NULL && fast->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        
+        ListNode *dummy = reverse_LL(slow,NULL);
+        
       ListNode *curr = head;
       ListNode *LLhalf = dummy;
   
@@ -52,6 +35,5 @@ public:
           LLhalf=temp;
           curr = curr_next;
       }
-
     }
 };
