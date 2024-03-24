@@ -1,16 +1,26 @@
+#pragma GCC optimize("O3", "unroll-loops")
 class Solution {
 public:
-    int findDuplicate(vector<int>& nums) {
-        unordered_map<int,int> mp;
-        for(auto x :nums)
-          mp[x]++;
-        
-        unordered_map<int,int> :: iterator it;
-        for(it=mp.begin();it!=mp.end();it++){
-            if(it->second>=2){
-                return it->first;
-            }
+//Fast & Slow find the cycle entrance
+    static int findDuplicate(vector<int>& nums) {
+        int slow=nums[0];
+        int fast=nums[0];
+        do{
+            slow=nums[slow];
+            fast=nums[nums[fast]];
+        }while(fast!=slow);
+        slow=nums[0];
+        while(slow!=fast){
+            fast=nums[fast];
+            slow=nums[slow];
         }
-        return 0;
+        return slow;
     }
 };
+
+auto init = []() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 'c';
+}();
