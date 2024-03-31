@@ -1,33 +1,23 @@
+#pragma GCC optimize("O3", "unroll-loops")
 class Solution {
 public:
     long long countSubarrays(vector<int>& nums, int minK, int maxK) {
         long long ans=0;
-
-        long long minpos = -1;
-        long long maxpos = -1;
-        long long calpit = -1;
-        for(int i=0;i<nums.size();++i){
-             
-             if(nums[i]<minK || nums[i]>maxK){
-                 calpit=i;
-             }
-
-             if(nums[i]==minK){
-                 minpos = i;
-             }
-             if(nums[i]==maxK){
-                 maxpos = i;
-             }
-
-             int smaller = min(minpos,maxpos);
-             int temp = smaller-calpit;
-             if(temp<=0){
-                 ans+=0;
-             }else{
-                 ans+=temp;
-             }
-
+        int maxi=-1, mini=-1;
+        int s=nums.size();
+        for(int r=0, l=0; r<s; r++){
+            int x=nums[r];
+            if (x<minK ||x>maxK){// x exceeds the bound
+                l=r+1; // move l to r+1
+                continue;
+            }
+            if (x==maxK) maxi=r; // position for maxK
+            if (x==minK) mini=r; // position for minK
+            ans+=max((min(maxi, mini)-l+1),0);
         }
         return ans;
     }
 };
+
+
+
