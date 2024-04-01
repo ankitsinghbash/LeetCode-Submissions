@@ -1,18 +1,27 @@
 class Solution {
 public:
+    typedef long long ll;
     long long countSubarrays(vector<int>& nums, int k) {
-        
-        int mx=*max_element(begin(nums),end(nums));
-        long long ans=0;
-        
-        int l=0,r=0,n=size(nums);
-        while(r<n){
-            k-=(nums[r++]==mx);
-            while(k==0){
-                k+=(nums[l++]==mx);
-            }
-            ans+=l;
+        ll ans=0;
+        int left=0;
+        int right=0;
+        int maxx_cnt=0;
+        auto maxx = *max_element(nums.begin(),nums.end());
+        while(right<nums.size()){
+             if(nums[right]==maxx){
+                maxx_cnt++;
+             }
+
+             while(maxx_cnt>=k){
+                  ans+=nums.size()-right;
+                  if(nums[left]==maxx){
+                    maxx_cnt--;
+                  }
+                  left++;
+             }
+             right++;
         }
         return ans;
     }
 };
+
