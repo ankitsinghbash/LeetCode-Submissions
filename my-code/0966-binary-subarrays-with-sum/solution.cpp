@@ -1,28 +1,28 @@
 class Solution {
 public:
     int numSubarraysWithSum(vector<int>& nums, int goal) {
-        int right=0;
+        int curr_zero = 0;
         int left=0;
+        int right=0;
+        int ans=0;
         int curr=0;
-        int cnt=0;
-        int prefix_zero=0;
         while(right<nums.size()){
-             curr+=nums[right];
-             while(left<right && (nums[left]==0 || curr>goal)){
-                if(nums[left]==1){
-                    prefix_zero=0;
+            curr+=nums[right];
+            while(left<right && (nums[left]==0 || curr>goal)){
+                curr-=nums[left];
+                if(nums[left]==0){
+                    curr_zero++;
                 }
                 else{
-                    prefix_zero+=1;
+                    curr_zero=0;
                 }
-                curr-=nums[left];
                 left++;
-             }
-             if(curr==goal){
-                cnt+=1+prefix_zero;
-             }
+            }
+            if(curr==goal){
+                 ans+=curr_zero+1;
+            }
             right++;
         }
-        return cnt;
+        return ans;
     }
 };
