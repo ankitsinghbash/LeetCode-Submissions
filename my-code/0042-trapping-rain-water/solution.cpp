@@ -1,36 +1,32 @@
 class Solution {
 public:
     int trap(vector<int>& height) {
-        //O(n):
-        int n = height.size();
-        vector<int> L(n);
-        int data1=0;
-        for(int i=0;i<n;i++){
-            if(height[i]>data1){
-                data1=height[i];
+        //Question based on next greater element:
+         int n = height.size();
+         vector<int> right(n);
+         vector<int> left(n);
+
+         int maxx = INT_MIN;
+         for(int i=0;i<n;i++){
+            if(height[i]>maxx){
+                maxx = height[i];
             }
-            L[i]=data1;
-        }
+            left[i] = maxx;
+         }
 
-  
-        vector<int> R(n);
-        int j=0;
-        int data2=0;
-        for(int i=n-1;i>=0;i--){
-            if(height[i]>data2){
-                data2=height[i];
-            }
-            R.push_back(data2);
-        }
-
-        reverse(R.begin(),R.end());
-
-        int water = 0;
-        for(int i=0;i<n;i++){
-            int value = min(L[i],R[i])-height[i];
-            water+=value;
-        }
-        return water;
-
+         int maxx1 = INT_MIN;
+         for(int i=n-1;i>=0;i--){
+              if(height[i]>maxx1){
+                maxx1 = height[i];
+              }
+              right[i] = maxx1;
+         }
+ 
+         int trap=0;
+         for(int i=0;i<n;i++){
+            int val = min(left[i],right[i])-height[i];
+            trap+=val;
+         }
+         return trap;
     }
 };
