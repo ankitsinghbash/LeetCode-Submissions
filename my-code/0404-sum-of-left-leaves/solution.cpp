@@ -11,24 +11,36 @@
  */
 class Solution {
 public:
-   int sum=0;
-   void solve(TreeNode *root,bool check){
-    if(root==NULL){
-        return;
-    }
- 
-    if(check == false && root->left==NULL && root->right==NULL){
-        sum+=root->val;
-    }
-      solve(root->left,false);
-      solve(root->right,true);
-   }
- 
+    int solve(TreeNode *root){
+        if(root->left==NULL && root->right==NULL){
+            return 0;
+        }
+        int sum=0;
+        queue<pair<TreeNode*,bool>> qu;
+        qu.push({root,false});
+        while(!qu.empty()){
+            int size = qu.size();
+            for(int i=0;i<size;i++){
+                pair<TreeNode*,bool> P = qu.front();
+                qu.pop();
+                TreeNode *node = P.first;
+                bool flag = P.second;
+                if(node->left!=NULL){
+                    qu.push({node->left,true});
+                }
+                if(node->right!=NULL){
+                    qu.push({node->right,false});
+                }
+                if(flag==true &&  node->left==NULL && node->right==NULL){
+                    sum+=node->val;
+                }
+            }
+        }
 
-
-    int sumOfLeftLeaves(TreeNode* root) {
-        bool val = true;
-        solve(root,val);
         return sum;
+    }
+    int sumOfLeftLeaves(TreeNode* root) {
+        //level order wise using bfs:
+        return solve(root);
     }
 };
