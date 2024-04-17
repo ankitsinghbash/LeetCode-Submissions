@@ -15,16 +15,17 @@ public:
     void solve(TreeNode *root,string str){
           if(root==NULL) return;
       
-          str+=to_string(root->val);
+         
  
           if(root->left==NULL && root->right==NULL){
+            str+=to_string(root->val);
             total+=stoi(str);
+            str.pop_back();
           }
             
+          str+=to_string(root->val);
           solve(root->left,str);
           solve(root->right,str);
-          str.pop_back();
-
 
     }
     int sumNumbers(TreeNode* root) {
