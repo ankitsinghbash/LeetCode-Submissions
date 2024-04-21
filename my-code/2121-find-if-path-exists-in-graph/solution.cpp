@@ -1,35 +1,46 @@
 class Solution {
 public:
-    bool validPath(int n, vector<vector<int>>& edge, int start, int last)  {
-        vector<vector<int>> graph(n);
-        for(int i=0;i<edge.size();i++)
-        {
-            graph[edge[i][0]].push_back(edge[i][1]);
-            graph[edge[i][1]].push_back(edge[i][0]);
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        //using bfs:
+        // 0---1,2;
+        // 1---0,2,3;
+        // 2---0,1;
+
+        // 3---1;
+
+        if(source==destination) return true;
+
+        unordered_map<int,vector<int>> mp;
+        for(int i=0;i<edges.size();i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+
+            mp[u].push_back(v);
+            mp[v].push_back(u);
+
         }
 
-       //BFS:
-       vector<bool> visited(n,false);
-       queue<int> qu;
-       qu.push(start);
-       visited[start]=true;
-       while(!qu.empty())
-       {
-           int Top = qu.front();
-           qu.pop();
-           if(Top==last) return true;
-           
-           for(int i=0;i<graph[Top].size();i++)
-           {
-               if(visited[graph[Top][i]]==false)
-               {
-                   qu.push(graph[Top][i]);
-                   visited[graph[Top][i]]=true;
-               }
-           }
+        queue<int> qu;
+        vector<int> visited(n,false);
+        visited[source]=true;
+        qu.push(source);
 
-       }
-       return false;
+        while(!qu.empty()){
+            int size = qu.size();
+            while(size--){
+                int u = qu.front();
+                qu.pop();
+                for(auto &v : mp[u]){
+                    if(visited[v]==false){
+                       
+                        qu.push(v);
+                        visited[v]=true;
+                         if(v==destination) return true;
+                    }
+                }
+            }
+        }
+        return false;
 
     }
 };
