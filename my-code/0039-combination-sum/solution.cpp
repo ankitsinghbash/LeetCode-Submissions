@@ -1,35 +1,27 @@
 class Solution {
 public:
-   vector<vector<int>> ans;
+    vector<vector<int>> box;
+    void solve(int i,vector<int> &candidates,int target,vector<int> &sm){
+          if(i>=candidates.size()) return;
 
-   void helper(int idx,vector<int> path,vector<int> candidates,int target,int n)
-   {
+          if(target<0) return;
 
-      if(idx>=n)  return;
+           
+          if(target==0){
+            box.push_back(sm);
+            return;
+          }
+           
+          sm.push_back(candidates[i]);
+          solve(i,candidates,target-candidates[i],sm);
+          sm.pop_back();
+          solve(i+1,candidates,target,sm);
+          
 
- 
-     if(target<0)  return;
-     
-
-      if(target==0)
-      {
-          ans.push_back(path);
-          return;
-      }
-
-    for(int i=idx;i<candidates.size();++i){
-        path.push_back(candidates[i]);
-         helper(i,path,candidates,target-candidates[i],n);  
-         path.pop_back();
-      }
-       
-   }
-
+    }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-    vector<int> path;
-    int n=candidates.size();
-    helper(0,path,candidates,target,n);
-    return ans;
-
+        vector<int> sm;
+        solve(0,candidates,target,sm);
+        return box;
     }
 };
