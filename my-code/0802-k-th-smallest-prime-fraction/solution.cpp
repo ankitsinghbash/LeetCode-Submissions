@@ -1,38 +1,41 @@
 class Solution {
 public:
-   typedef pair<double, pair<int, int>> P; 
+   typedef   pair<double,pair<int,int>> ll;
    struct Cmp{
-        bool operator()(const P &a, const P &b) {
-            return a.first > b.first;
+        bool operator()(const ll &a, const ll &b) {
+            return a.first < b.first;  
         }
     };
-    priority_queue<P,vector<P>,Cmp> store;
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+        //taken max heap:
+    int n = arr.size();
+    priority_queue<ll,vector<ll>> pq;
 
-    void solve(int idx, vector<int> &arr) {
-        if (idx >= arr.size()) return;
-
-        for (int i = 0; i < arr.size(); i++) {
-            if (idx != i) { // Avoid dividing by itself
-                double value = (double)arr[idx] / (double)arr[i];
-                store.push({value, {arr[idx], arr[i]}});
+    for(int i=0;i<n;i++){
+        for(int j=i+1;j<n;j++){
+            pair<int,int> P = {arr[i],arr[j]};
+            double x =   double(arr[i])/double(arr[j]);
+            pq.push({x,P});
+            if(pq.size()>k)
+            {
+                pair<int,int> X = pq.top().second;
+                 pq.pop();
             }
         }
-        solve(idx + 1, arr);
     }
 
-    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
-        solve(0, arr);
-
-        while (k > 1) { // Loop until k becomes 1
-            store.pop();
-            k--;
-        }
-
-        pair<double, pair<int, int>> P = store.top();
-        vector<int> ans;
-        ans.push_back(P.second.first);
-        ans.push_back(P.second.second);
-        return ans;
+    
+    ll X = pq.top();
+    pair<int,int> L = X.second;
+    vector<int> ans;
+    ans.push_back(L.first);
+    ans.push_back(L.second);
+    return ans;
+      
     }
 };
+
+
+
+
 
