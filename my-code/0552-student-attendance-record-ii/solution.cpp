@@ -10,10 +10,10 @@ public:
         if(dp[n][a][l]!=-1) return dp[n][a][l];
         
         long long int ans = 0;
-        ans = (ans+solve(p+1,n-1,a,0)%mod)%mod; 
+        ans = (ans+solve(p+1,n-1,a,0)%mod)%mod;  
         ans = (ans+solve(p,n-1,a+1,0)%mod)%mod;
         ans = (ans+solve(p,n-1,a,l+1)%mod)%mod;
-        return dp[n][a][l] =  ans%mod;
+        return dp[n][a][l] =  ans;
     }
     int checkRecord(int n) {
 
