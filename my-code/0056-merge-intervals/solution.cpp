@@ -1,37 +1,51 @@
 class Solution {
 public:
-   static bool cmp(vector<int> &a,vector<int> &b){
-       return a[0]<b[0];
-   }
-
-
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        sort(intervals.begin(),intervals.end(),cmp);
-  
-        vector<vector<int>> store;
-        vector<int> prev = intervals[0];
-        int i=1;
-        int n = intervals.size();
-        while(i<n){
-            vector<int>  curr = intervals[i];
+        //threee case happen where:
+        //case1 : [1,3],[2,6],[5,9],[7,8],[10,11]   //this is overlap case:
+         //case2: [1,3],[4,6] //on conflicts case:
+         //case3: [1,6],[2,3] //also overlap case and neglect the case of overall overlaps:
 
-            int prevend = prev[1];
-            int currstart = curr[0];
-            int currend = curr[1];
-            if(prevend<currstart){
-                store.push_back(prev);
-                prev = curr;
-                i++;
-            } 
-            else{  //overlap:
-                 prev[1] = max(prev[1],currend);
-                 i++;
-            }   
-        }
-        store.push_back(prev);
-        return store;
-  
+
+         vector<vector<int>> ans;
+         sort(intervals.begin(),intervals.end());
+
+         int i=1;
+         vector<int> prev = intervals[0];
+
+         while(i<intervals.size()){
+             int starttime  = intervals[i][0];
+             int endtime = intervals[i][1];
+         
+             int prevendtime = prev[1];
+
+             if(prevendtime>=endtime){
+                     //case overlap inside:
+                     i++;
+             } 
+             else if(prevendtime<starttime){
+                            //no conflict caes: 
+                            ans.push_back(prev);
+                            prev = intervals[i];
+                            i++; 
+             }
+             else{
+                    //1----3 
+                    //   2---5:
+                    prev[1] = endtime;
+                    i++;
+
+             }
+
+
+
+         }
+         ans.push_back(prev);
+         
         
+        return ans;
+
+
 
     }
 };
