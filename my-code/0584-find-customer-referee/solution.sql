@@ -1,7 +1,4 @@
 # Write your MySQL query statement below
-SELECT 
-     name
-FROM 
-   Customer
-WHERE
-    IFNULL(referee_id,1) <> 2
+select name as name
+from Customer
+where IFNULL(referee_id,0)<>2
