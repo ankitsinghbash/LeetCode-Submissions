@@ -1,41 +1,34 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        int j=nums.size()-1;
-        while(j>0 && nums[j-1]>=nums[j]){
+         //first off all find the 
+         int j = nums.size()-1;
+         while(j>0 && nums[j-1]>=nums[j]){
             j--;
-        }
-       
-        
+         }
+
+         
         if(j==0){
-            reverse(nums.begin(),nums.end());
-            return;
+             reverse(nums.begin(),nums.end());
         }
+        else{
+            //put a number at a place of j-1;
+            //number is greater number from j to n;
 
-        int mini = INT_MAX;
-        int idx=0;
-        for(int i=j;i<nums.size();i++){
-            if(nums[i]>nums[j-1]){
-                    if(nums[i]<=mini){
-                        mini =nums[i];
-                        idx = i;
-                    }
+            int k = nums.size()-1;
+            for(;k>=j;k--){
+                 if(nums[k]>nums[j-1]){
+                    break;
+                 }
             }
+            swap(nums[k],nums[j-1]);
+
+
+            reverse(nums.begin()+j,nums.end());
         }
 
-       
-        swap(nums[j-1],nums[idx]);      
-
-
-        reverse(nums.begin()+j,nums.end());
-       
-
-    } 
+    }
 };
 
 
-
-//[23,1,3,3,12]
-
-
-
+//3,2,1
