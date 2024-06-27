@@ -2,12 +2,12 @@ class Solution {
 public:
     vector<int> parent;
     vector<int> rank;
+
     int find(int x){
         if(parent[x]==x) return x;
 
         return parent[x] = find(parent[x]);
     }
-
 
     void Union(int x,int y){
         int x_parent = find(x);
@@ -30,31 +30,31 @@ public:
 
 
     bool equationsPossible(vector<string>& equations) {
-         parent.resize(26);
-         rank.resize(26,0);
-         for(int i=0;i<26;i++){
-             parent[i]=i;
-         }
-        
-         for(int i=0;i<equations.size();i++){
-             string str = equations[i];
-             if(str[1]=='='){
-                 //equality:
-                 Union(str[0]-'a',str[3]-'a');
-             }
-         }
+        //using dsu concept:
+        parent.resize(26);
+        rank.resize(26,0);
 
-         for(int i=0;i<equations.size();i++){
-             string str = equations[i];
-             if(str[1]=='!'){
-                 int x_parent = find(str[0]-'a');
-                 int y_parent = find(str[3]-'a');
-                 if(x_parent==y_parent){
-                     return false;
-                 }
+      
+        for(int i=0;i<26;i++){
+            parent[i] = i;
+        }
+
+        for(int i=0;i<equations.size();i++){
+             if(equations[i][1]=='='){
+                 Union(equations[i][0]-'a',equations[i][3]-'a');
              }
-         }
-         return true;
+        }
+
+        for(int i=0;i<equations.size();i++){
+            if(equations[i][1]=='!'){
+                int first_parent = find(equations[i][0]-'a');
+                int second_parent = find(equations[i][3]-'a');
+                if(first_parent==second_parent){
+                    return false;
+                }
+            }
+        }
+        return true;
 
     }
 };
