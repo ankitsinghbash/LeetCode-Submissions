@@ -1,33 +1,35 @@
 class Solution {
 public:
     int ans = -1;
-    void dfs(vector<int> &edges,int u,vector<bool> &visited,vector<bool> &inRecurssion,vector<int> &store){
-          visited[u]=true;
-          inRecurssion[u]=true;
-          int v = edges[u];
+    void dfs(int u,vector<bool> &visited,vector<bool> &inRecurssion,vector<int> &cnt,vector<int> &edges){
 
-          if(v!=-1 && visited[v]==false){
-              store[v]=store[u]+1;
-              dfs(edges,v,visited,inRecurssion,store);
-          }
-          else if(v!=-1 && visited[v]==true && inRecurssion[v]==true){
-               ans=max(ans,store[u]-store[v]+1);
-          }
-          inRecurssion[u] = false;
+         
+         visited[u] = true;
+         inRecurssion[u]=true;
+         int v = edges[u];
+         if(v!=-1 && visited[v]==false){
+            cnt[v]=cnt[u]+1;
+            dfs(v,visited,inRecurssion,cnt,edges);
+         }
+         else if(v!=-1 && visited[v]==true && inRecurssion[v]==true){
+               ans = max(ans,cnt[u]-cnt[v]+1);
+         }
+
+         inRecurssion[u]=false;
+
 
     }
 
     int longestCycle(vector<int>& edges) {
-        int V = edges.size();
-        vector<bool> visited(V,false);
-        vector<bool> inRecurssion(V,false);
-        vector<int> store(V,1);
-        for(int i=0;i<V;i++){
+        int n = edges.size();
+        vector<bool> visited(n,false);
+        vector<bool> inRecurssion(n,false);
+        vector<int> cnt(n,1);
+        for(int i=0;i<n;i++){
             if(visited[i]==false){
-                dfs(edges,i,visited,inRecurssion,store);
+                dfs(i,visited,inRecurssion,cnt,edges);
             }
         }
         return ans;
-
     }
 };
