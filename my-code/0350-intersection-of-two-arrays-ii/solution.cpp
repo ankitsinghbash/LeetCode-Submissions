@@ -1,20 +1,22 @@
 class Solution {
 public:
-    vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+    static vector<int> intersect(vector<int>& nums1, vector<int>& nums2) {
+        int freq[1001]={0}, sz=nums1.size();
+        for(int x: nums1) freq[x]++;
         vector<int> ans;
-        unordered_map<int,int> mp;
-        for(int i=0;i<nums1.size();i++){
-            mp[nums1[i]]++;
+        ans.reserve(sz);
+        for(int x: nums2){
+            if (freq[x]-->0) ans.push_back(x);
         }
-        
-        
-        for(int i=0;i<nums2.size();i++){
-            int value = nums2[i];
-            if(mp[value]>0){
-                ans.push_back(value);
-                mp[value]--;
-            }
-        }
-        return ans;
+        return ans;   
     }
 };
+
+
+
+auto init = []() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    return 'c';
+}();
