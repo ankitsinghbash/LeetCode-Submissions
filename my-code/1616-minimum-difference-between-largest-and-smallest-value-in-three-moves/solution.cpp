@@ -1,25 +1,28 @@
 class Solution {
 public:
     int minDifference(vector<int>& nums) {
-        //three case banege:
-        //->after sort:
-        //1->fisrt 1 and last 2 same karo;
-        //2->fisrt 2 and last 1 same karo;
-        //3->first 3 and last 0 same karo:
-        //4->first 0 and last 3 same karo:
-        //find minimum differece in all cases:
-        
-        int n=nums.size();
-        if(n<=3) return 0;
+      int n = nums.size();
+      //0th index - n-4th index:   (n-1,n-2,n-3 index converted to minimum value)
+      //1th index - n-3th index:   (n-2,n-1 index converted to minimum value)
+      //2th index - n-2th index:   (0,1 and n-1 converted to minimum value)
+      //3th index - n-1th index:   (0,1,2 are converted to minimum value)
+      if(n<=3){
+        return 0;
+      }
 
-        sort(nums.begin(),nums.end());
-        
-        int mini = INT_MAX;
-        for(int i=1;i<=4;i++)
-        {
-            int val = abs(nums[n-i]-nums[4-i]);  //nums[n-1] ->last and nums[4-1]->first means case 3:
-            mini  = min(mini,val);
-        }
-        return mini;
+      sort(nums.begin(),nums.end());
+
+      int mini = INT_MAX;
+      for(int i=0;i<=3;i++){
+         int start = nums[i];
+         int end = nums[n+i-4];
+         int diff = abs(end-start);
+         mini = min(diff,mini);
+      }
+      return mini;
+
+
     }
 };
+
+//0,1,5,10,14
