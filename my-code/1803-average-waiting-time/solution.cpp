@@ -1,20 +1,33 @@
 class Solution {
 public:
     double averageWaitingTime(vector<vector<int>>& customers) {
-        double total_waiting_time = 0;
-        int current_time = 0;
+         int n = customers.size();
+    
+         int current_time = 0;
+         double w=0.0;
+          for(int i=0;i<customers.size();i++){
+               int start = customers[i][0];
+               int time = customers[i][1];
+            
+               if(start<current_time){
+                              w += current_time-start+time;
+                             
+               }
+               else if(start>=current_time){
+                   w+=time;
+                   current_time = start;
+               }
+               current_time = current_time+time;
 
-        for (const auto& customer : customers) {
-            int arrival = customer[0];
-            int service = customer[1];
-            if (current_time < arrival) {
-                current_time = arrival;
-            }
-            int waiting_time = current_time - arrival + service;
-            total_waiting_time += waiting_time;
-            current_time += service;
-        }
+          }
 
-        return total_waiting_time / customers.size();
+   
+          return w*1.0/n;
+ 
+              
     }
 };
+
+
+//   1-------3
+//        2-----------------------------
