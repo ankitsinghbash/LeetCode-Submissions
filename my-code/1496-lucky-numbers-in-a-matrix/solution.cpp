@@ -1,40 +1,47 @@
 class Solution {
 public:
     vector<int> luckyNumbers (vector<vector<int>>& matrix) {
-        
-       vector<int> answer;
-       int i=0;
-       while(i<matrix.size())
-       {
-           //i=0,find minimum;
-           int mini=INT_MAX;
-           int col;
-           for(int j=0;j<matrix[0].size();j++)
-           {
-                if(matrix[i][j]<mini)
-                {
-                    mini=matrix[i][j];
-                    col=j;
-                }
-           }
-           //basically mini is my smallest number in row; with j=col;
-           //condition for lucky number if mini is the maximum of [i][col] then it only a lucky other wise;
-           int real = mini;
-           for(int i=0;i<matrix.size();i++)
-           {
-               if(matrix[i][col]>mini)
-               {
-                   mini=matrix[i][col]; //mini update:
-               } 
-           }
-           //if real and mini is not same mean's it goto update:
-           if(real==mini)   //if real or mini is same means mini<ever column value:
-           {
-               answer.push_back(mini);
-           }
-           i++;
-       }
-       return answer;
+        //first we have to store the min number of our row:
+        vector<int> box_min;
+        for(int i=0;i<matrix.size();i++){
+                 int mini =   INT_MAX;
+                 int idx=-1;
+                 for(int j=0;j<matrix[0].size();j++){
+                      if(mini>matrix[i][j]){
+                             mini = matrix[i][j];
+                             idx = j;
+                      }
+                 }
+               box_min.push_back(idx);
+        }
 
-    }
+
+        int k=0;
+        while(k<box_min.size()){
+            int x  = k;
+            int y = box_min[k];
+
+            int value = matrix[x][y];
+            int maxx = INT_MIN;
+            //now check if value is the maximum value in the row x and col y then it's out ans just break the loop:
+            for(int i=0;i<matrix.size();i++){
+                 int grid  = matrix[i][y];
+                 maxx = max(maxx,grid);
+            }
+ 
+           vector<int> ans;
+           if(value==maxx){
+                ans.push_back(value);
+                return ans;
+            
+           }
+           k++;
+
+        }
+        return {};
+
+          
+
+
+    } 
 };
