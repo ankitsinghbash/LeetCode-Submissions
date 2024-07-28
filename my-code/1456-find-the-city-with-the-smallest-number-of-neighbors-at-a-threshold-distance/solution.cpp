@@ -1,57 +1,73 @@
-#include <vector>
-#include <limits>
-#include <algorithm>
-
-using namespace std;
-
 class Solution {
 public:
+    //how bellman forld using in undirect graph:
+    //many it is use in direct graph and if graph is undirect then convert it to directed and then use:
+    struct cmp{
+        bool operator()(const pair<int,int> &a,const pair<int,int> &b){
+                      if(a.second==b.second){
+                            return a.first>b.first;
+                      }
+                      return a.second<b.second;
+        }
+    };
+
+    vector<int> bellman(int u,vector<vector<int>> &edges,int n ){
+
+         vector<int> dist(n,INT_MAX);
+         dist[u]=0;
+          
+         for(int i=1;i<=n-1;i++){ 
+
+
+         for(auto &x : edges){
+             int u = x[0];
+             int v = x[1];
+             int w = x[2];
+
+             if(dist[u]!=INT_MAX && dist[u]+w<dist[v]){
+                dist[v] = dist[u]+w;
+             }
+
+             if(dist[v]!=INT_MAX && dist[v]+w<dist[u]){
+                dist[u] = dist[v]+w;
+             }
+         }
+          
+         }
+         //no need to check negative cycle because there is no negative weight present in question:
+         return dist;
+
+    }
+    
+   
+
     int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
-        // Initialize the distance matrix with infinity
-        vector<vector<int>> dist(n, vector<int>(n, numeric_limits<int>::max()));
-        
-        // Distance to itself is 0
-        for (int i = 0; i < n; ++i) {
-            dist[i][i] = 0;
-        }
-        
-        // Populate the distance matrix with the given edges
-        for (const auto& edge : edges) {
-            int u = edge[0], v = edge[1], w = edge[2];
-            dist[u][v] = w;
-            dist[v][u] = w;
-        }
-        
-        // Floyd-Warshall algorithm
-        for (int k = 0; k < n; ++k) {
-            for (int i = 0; i < n; ++i) {
-                for (int j = 0; j < n; ++j) {
-                    if (dist[i][k] != numeric_limits<int>::max() && dist[k][j] != numeric_limits<int>::max()) {
-                        dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
+    
+         vector<vector<int>> matrix;
+
+         for(int i=0;i<n;i++){
+               matrix.push_back(bellman(i,edges,n));
+         }
+
+          
+         vector<pair<int,int>> vec; 
+         for(int i=0;i<matrix.size();i++){
+                int cnt=0;
+                for(int j=0;j<matrix[0].size();j++){
+                    if(matrix[i][j]<=distanceThreshold){
+                              cnt++;
                     }
                 }
-            }
-        }
-        
-        // Find the city with the smallest number of reachable cities
-        // and if there is a tie, choose the city with the greatest number.
-        int minReachableCities = numeric_limits<int>::max();
-        int bestCity = -1;
-        
-        for (int i = 0; i < n; ++i) {
-            int reachableCities = 0;
-            for (int j = 0; j < n; ++j) {
-                if (dist[i][j] <= distanceThreshold) {
-                    reachableCities++;
-                }
-            }
-            
-            if (reachableCities <= minReachableCities) {
-                minReachableCities = reachableCities;
-                bestCity = i;
-            }
-        }
-        
-        return bestCity;
+                vec.push_back({i,cnt});
+         } 
+
+
+
+         sort(vec.begin(),vec.end(),cmp());
+           
+         int ans = vec[0].first;
+         return ans;
+
+
     }
-};
+};  
