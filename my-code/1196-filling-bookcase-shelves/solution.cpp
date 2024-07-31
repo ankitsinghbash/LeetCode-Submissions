@@ -1,29 +1,23 @@
 class Solution {
 public:
-   int dp[1001][1001];
-   int solve(int idx,int currheight,int currwidth,vector<vector<int>> &books,int shelWidth){
-
-
-       if(idx>=books.size()) return currheight;
-   
-       if(dp[idx][currwidth]!=-1){
-           return dp[idx][currwidth];
-       }
-
-       int pick = INT_MAX;
-       int notpick = INT_MAX;
-       if(currwidth+books[idx][0]<=shelWidth){  //lie on same level:
-           pick = solve(idx+1,max(currheight,books[idx][1]),currwidth+books[idx][0],books,shelWidth);
-       }
-       notpick = currheight + solve(idx+1,books[idx][1],books[idx][0],books,shelWidth);  //lie on new level:
-  
-       return  dp[idx][currwidth] = min(pick,notpick);
-
-   }
-
-
-    int minHeightShelves(vector<vector<int>>& books, int shelfWidth) {
-        memset(dp,-1,sizeof(dp));
-        return solve(0,0,0,books,shelfWidth);
+    int minHeightShelves(std::vector<std::vector<int>>& books, int shelfWidth) {
+        int n = books.size();
+        std::vector<int> dp(n + 1, INT_MAX);
+        dp[0] = 0;  // Base case: no books require 0 height
+        
+        for (int i = 1; i <= n; ++i) {
+            int total_width = 0;
+            int max_height = 0;
+            for (int j = i; j > 0; --j) {
+                total_width += books[j-1][0];
+                if (total_width > shelfWidth) {
+                    break;
+                }
+                max_height = std::max(max_height, books[j-1][1]);
+                dp[i] = std::min(dp[i], dp[j-1] + max_height);
+            }
+        }
+        
+        return dp[n];
     }
 };
