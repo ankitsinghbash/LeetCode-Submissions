@@ -1,58 +1,57 @@
 class Solution {
 public:
     int minSwaps(vector<int>& nums) {
-    
-      vector<int> v{nums.begin(),nums.end()};
-      for(int i=0;i<nums.size();i++)
-      {
-          v.push_back(nums[i]);
-      }
-
-      int ct1=0;
-      for(int i=0;i<nums.size();i++)
-      {
-          if(nums[i]==1)
-          {
-              ct1++;
-          }
-      }
-
-      int left=0;
-      int right=ct1-1;
-
-      int current1=0;
-      for(int i=left;i<=right;i++)
-      {
-          if(nums[i]==1)
-          {
-              current1++;
-          }
-      }
-
-      int maxx=current1;
-      int m=v.size();
-      
-      int n=nums.size();
-      while(left<n)
-      {
-           right++;
-           if(v[right]==1)
-           {
-               current1++;
-           }
-           left++;
-           if(v[left-1]==1)
-           {
-               current1--;
-           }
+            //I can use the concept of sliding window:
+            //iterator in arr by using sliding window of size  = total_number of 1's and check how many 1's is required to make this window as a contineouly 1:
+           
+            vector<long long> newarr(nums.begin(),nums.end());
+            int totalone=0;
+            for(int i=0;i<nums.size();i++){
+                if(nums[i]==1){
+                    totalone++;
+                }
+                newarr.push_back(nums[i]);
+            }
         
-           maxx=max(maxx,current1);
-      }
-      int ans = ct1-maxx;
-      return ans;
-      
+            int n = newarr.size();
+            vector<long long> pre_cnt(n,0);
+            int cnt=0;
+            for(int i=0;i<n;i++){
+                if(newarr[i]==1){
+                     cnt++;
+                }
+                pre_cnt[i] = cnt;
+            }
 
 
+        
+     
 
+
+             
+            
+
+            int start = totalone-1;
+            int mini = INT_MAX;
+            
+            if(totalone==0) return 0;
+        
+            for(int i=start;i<n;i++){
+                if(i-totalone>=0){
+                  int zero = pre_cnt[i]-pre_cnt[i-totalone];
+                  int restzero = totalone-zero;
+                  mini = min(mini,restzero);
+                }
+                else{
+                  int zero = pre_cnt[i];
+                  int restzero = totalone-zero;
+                  mini = min(mini,restzero);
+                }
+            }
+            return mini;
+
+
+        
+        
     }
 };
