@@ -11,24 +11,26 @@
  */
 class Solution {
 public:
-   bool solve(TreeNode *root,long long int maxx,long long int mini){
+    bool solve(TreeNode *root,long long leftrange,long long rightrange){
+
        if(root==NULL) return true;
     
-
-       if(root->val<=mini || root->val>=maxx){
+    
+       if(root->val<=leftrange || root->val>=rightrange){
            return false;
        }
-
-      bool left = solve(root->left,root->val,mini);
-      bool right = solve(root->right,maxx,root->val);
-
-      return left&&right;
-   }
-
-
-
-
-    bool isValidBST(TreeNode* root) {
-        return solve(root,LONG_MAX,LONG_MIN);
+        
+        
+        bool left = solve(root->left,leftrange,root->val);
+        bool right = solve(root->right,root->val,rightrange);
+        
+        
+        return left&&right;
+    
+    
     }
+    
+    bool isValidBST(TreeNode* root) {
+        return solve(root,LONG_MIN,LONG_MAX);
+    }  
 };
