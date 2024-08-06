@@ -12,22 +12,22 @@
 class Solution {
 public:
     bool solve(TreeNode *p,TreeNode *q){
-     if(p==NULL || q==NULL) return p==q;
-  
-     if(p->val!=q->val){
-         return false;
-     }
-
-      bool left = solve(p->left,q->right);
-      bool right = solve(p->right,q->left);
-
-     return left&&right;
-
+        if(p==NULL || q==NULL){
+            return p==q;
+        }
+        
+        
+        if(p->val!=q->val) return false;
+        
+        bool left = solve(p->left,q->right);
+        bool right = solve(p->right,q->left);
+        
+        return left&&right;
+        
+        
     }
-
-
+    
     bool isSymmetric(TreeNode* root) {
-        if(root==NULL) return true;
-        return solve(root->left,root->right);
+          return solve(root->left,root->right);
     }
 };
