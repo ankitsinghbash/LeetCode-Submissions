@@ -1,19 +1,26 @@
 class Solution {
+    int n;
+
 public:
     int minSteps(int n) {
-        vector<int> dp(n+1,INT_MAX);
-        dp[0]=0;
-        dp[1]=0;
-        for(int i=2;i<n+1;i++){
-            for(int j=2;j<=i;j++)
-            {
-                   if(i%j==0){
-                    int k = i/j;
-                    dp[i]=min(dp[i],dp[k]+j);
-                   }
-            }
-        }
-        return dp[n];
+        if (n == 1) return 0;
+        this->n = n;
+       
+        return 1 + minStepsHelper(1, 1);
+    }
 
+private:
+    int minStepsHelper(int currLen, int pasteLen) {
+       
+        if (currLen == n) return 0;
+        
+        if (currLen > n) return 1000;
+
+       
+        int opt1 = 2 + minStepsHelper(currLen * 2, currLen);
+       
+        int opt2 = 1 + minStepsHelper(currLen + pasteLen, pasteLen);
+
+        return min(opt1, opt2);
     }
 };
