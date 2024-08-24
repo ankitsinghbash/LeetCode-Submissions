@@ -12,29 +12,35 @@
 class Solution {
 public:
     vector<int> largestValues(TreeNode* root) {
-        if(root==NULL){
-            return {};
-        }
- 
-     vector<int> ans;
-      queue<TreeNode*> qu;
-      qu.push(root);
-    while(!qu.empty()){
-            int size = qu.size();
-            int maxx = INT_MIN;
-            while(size--){
-                TreeNode *node = qu.front();
-                qu.pop();
-                maxx = max(maxx,node->val);
-                if(node->left!=NULL){
-                    qu.push(node->left);
-                }
-                if(node->right!=NULL){
-                    qu.push(node->right);
-                }
-            }
+        //use level order traversal to find the maximum node value in each level of the tree:
+        vector<int> ans;
+        
+        
+         if(root==NULL){
+             return {};
+         }
+        queue<TreeNode*> qu;
+        qu.push(root);
+        
+        
+        
+        while(!qu.empty()){
+             int size = qu.size();
+             int maxx  = INT_MIN;
+             while(size--){
+                  TreeNode *node = qu.front();
+                  qu.pop();
+                  maxx = max(maxx,node->val);
+                  if(node->left){
+                      qu.push(node->left);
+                  }
+                  if(node->right){
+                      qu.push(node->right);
+                  }
+             }
             ans.push_back(maxx);
-    }
-   return ans;
+        }
+        
+        return ans;
     }
 };
